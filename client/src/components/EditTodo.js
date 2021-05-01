@@ -1,18 +1,18 @@
 import React, { Fragment, useState } from "react";
 
 const EditTodo = ({ todo }) => {
-  const [todoId, setTodoId] = useState(todo.todo_id);
-  const [description, setDescription] = useState(todo.description);
-  console.log("description", description)
+  const [todoId, setTodoId] = useState(todo.id);
+  const [title, setTitle] = useState(todo.title);
+  console.log("todo title", title)
   console.log("ID", todoId)
 
   const handleOnChange = (e) => {
-    setDescription(e.target.value);
+    setTitle(e.target.value);
   };
 
   const handleSave = async () => {
     try {
-      const body = { description };
+      const body = { title };
 
       const options = {
         method: "PUT",
@@ -21,7 +21,7 @@ const EditTodo = ({ todo }) => {
       };
 
       const response = await fetch(
-        `/todos/${todoId}`,
+        `api/todos/${todoId}`,
         options
       );
       console.log(response);
@@ -43,18 +43,18 @@ const EditTodo = ({ todo }) => {
         type="button"
         className="btn btn-primary"
         data-toggle="modal"
-        data-target={`#id${todo.todo_id}`}
+        data-target={`#id${todo.id}`}
       >
         Open modal
       </button>
 
-      <div className="modal" id={`id${todo.todo_id}`} onClick={ () => setDescription(todo.description)}>
+      <div className="modal" id={`id${todo.id}`} onClick={ () => setTitle(todo.title)}>
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h4 className="modal-title">Edit Todo</h4>
 
-              <button type="button" className="close" data-dismiss="modal" onClick={ () => setDescription(todo.description)}>
+              <button type="button" className="close" data-dismiss="modal" onClick={ () => setTitle(todo.title)}>
                 &times;
               </button>
             </div>
@@ -63,13 +63,13 @@ const EditTodo = ({ todo }) => {
               <input
                 type="text"
                 className="form-control"
-                value={description}
+                value={title}
                 onChange={(e) => handleOnChange(e)}
               ></input>
             </div>
 
             <div className="modal-footer">
-              <button type="button" className="btn" data-dismiss="modal" onClick={ () => setDescription(todo.description)}>
+              <button type="button" className="btn" data-dismiss="modal" onClick={ () => setTitle(todo.title)}>
                 Cancel
               </button>
               <button

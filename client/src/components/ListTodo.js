@@ -8,7 +8,7 @@ const ListTodos = () => {
 
   const getTodos = async () => {
     try {
-      const response = await fetch("/todos");
+      const response = await fetch("api/todos");
       if (response.ok) {
         const jsonResponse = await response.json();
         // console.log(jsonResponse);
@@ -28,14 +28,14 @@ const ListTodos = () => {
       };
 
       const response = await fetch(
-        `/todos/${id}`,
+        `api/todos/${id}`,
         options
       );
 
       if (response.ok) {
         const jsonResponse = await response.json();
         console.log(jsonResponse);
-        setTodos(todos.filter(todos => todos.todo_id !== id));
+        setTodos(todos.filter(todos => todos.id !== id));
         return jsonResponse;
       }
       throw new Error("Request failed!");
@@ -68,13 +68,13 @@ const ListTodos = () => {
 
           {todos.map((todo, index) => {
             return (
-              <tr key={todo.todo_id}>
-                <th>{todo.description}</th>
+              <tr key={todo.id}>
+                <th>{todo.title}</th>
                 <th>{<EditTodo todo={todo}/>}</th>
                 <th>
                   <button
                     className="btn btn-danger"
-                    onClick={() => handleDelete(todo.todo_id)}
+                    onClick={() => handleDelete(todo.id)}
                   >
                     Delete
                   </button>

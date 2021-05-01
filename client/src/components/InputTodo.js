@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from "react";
 
 const InputTodo = () => {
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleChange = (e) => {
-    setDescription(e.target.value);
+    setTitle(e.target.value);
   };
 
  
@@ -13,7 +13,7 @@ const InputTodo = () => {
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = { description };
+      const body = { title };
 
       const options = {
         method: "POST",
@@ -22,9 +22,9 @@ const InputTodo = () => {
       };
 
 
-      const response = await fetch("/todos", options);
-      console.log(response);
-      window.location = "/"; 
+      const response = await fetch("api/todos", options);
+      console.log("add a todo", response);
+      // window.location = "/"; 
 
       if (response.ok) {
         const jsonResponse = await response.json();
@@ -45,7 +45,7 @@ const InputTodo = () => {
           type="text"
           className="form-control"
           placeholder="write something..."
-          value={description}
+          value={title}
           onChange={handleChange}
         />
         <button className="btn btn-primary" >Add</button>

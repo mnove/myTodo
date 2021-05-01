@@ -107,3 +107,6 @@ dist
 
 personal_notations.js
 .personal_notations
+
+database.sql/
+.database.sql
