@@ -1,10 +1,5 @@
 const pool = require("../db");
 
-// router.post("/create", todoController.create_todo); // Create a todo
-// router.get("/", todoController.get_all); // Get all todos
-// router.get("/:id", todoController.get_todo); // Get a specific todo
-// router.put("/:id", todoController.update_todo); // Update a specific todo
-// router.delete("/:id", todoController.delete_todo); // Delete a specific todo
 
 const create_todo = async (req, res) => {
   try {

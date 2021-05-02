@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 var morgan = require('morgan')
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 const pool = require("./db");
 const path = require("path");
 const PORT = process.env.PORT || 5000;
@@ -10,12 +11,23 @@ const PORT = process.env.PORT || 5000;
 // process.env.NODE_ENV
 
 // ROUTES
+const registrationRoutes = require("./routes/registrationRoutes");
 const todoRoutes = require("./routes/todoRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 
 // middleware
-app.use(cors());
+app.use(cors({
+  credentials: true
+}));
+
+// for json 
 app.use(express.json());
+
+// parsing cookies
+app.use(cookieParser());
+
+
 app.use(morgan('tiny'));
 
 if (process.env.NODE_ENV === "production") {
@@ -29,6 +41,8 @@ if (process.env.NODE_ENV === "production") {
 // DEFINING & SCOPING ROUTES
 
 app.use('/api/todos', todoRoutes);
+app.use('/api/register', registrationRoutes);
+app.use('/api/auth', authRoutes);
 // app.use('/api/user', userRoutes); // TODO
 
 
