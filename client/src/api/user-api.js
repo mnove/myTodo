@@ -23,7 +23,7 @@ export const userApi = {
     return await resolve(
       axios({
         method: "POST",
-        url: "api/login",
+        url: "api/auth/login",
         data: loggingUser,
         headers: { "Content-Type": "application/json" },
         withCredentials: "include", // to get the cookie in every request
@@ -42,7 +42,7 @@ export const userApi = {
       return await resolve(
         axios({
           method: "GET",
-          url: "api/verify-auth",
+          url: "api/auth/verify-auth",
           headers: { "Content-Type": "application/json" },
           withCredentials: "include", // to get the cookie in every request
         }).then((res) => {
@@ -107,7 +107,7 @@ export const userApi = {
     return await resolve(
       axios({
         method: "GET",
-        url: "api/logout",
+        url: "api/auth/logout",
         headers: { "Content-Type": "application/json" },
         withCredentials: "include", // to get the cookie in every request
       }).then((res) => {
