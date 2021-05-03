@@ -36,24 +36,8 @@ ALTER ROLE r_app_crud SET search_path TO app;
 -- install UUID extension for postgres
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- create table todo in app schema
-CREATE TABLE app.todo (
-    id UUID NOT NULL DEFAULT uuid_generate_v4(),
-    title VARCHAR (255) NOT NULL
-);
 
-CREATE TABLE app.users (
-    user_id UUID NOT NULL DEFAULT uuid_generate_v4(),
-    user_first_name VARCHAR (100) NOT NULL,
-    user_last_name VARCHAR (100) NOT NULL,
-    user_email VARCHAR (150) UNIQUE NOT NULL,
-    user_password VARCHAR (100) NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-
-
+-- create triggers to update timestamps in the tables 
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -67,6 +51,63 @@ CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON app.users
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON app.tasks
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON app.subtasks
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+
+
+-- create table todo in app schema
+CREATE TABLE app.tasks (
+    task_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    task_description VARCHAR (255) NOT NULL,
+    task_is_completed BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE app.subtasks (
+    subtask_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    subtask_description VARCHAR (1000) NOT NULL,
+    subtask_is_completed BOOLEAN NOT NULL DEFAULT false,
+    subtask_task_id UUID NOT NULL REFERENCES app.tasks(task_id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE app.users (
+    user_id UUID NOT NULL DEFAULT uuid_generate_v4(),
+    user_first_name VARCHAR (100) NOT NULL,
+    user_last_name VARCHAR (100) NOT NULL,
+    user_email VARCHAR (150) UNIQUE NOT NULL,
+    user_password VARCHAR (100) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+
+-- inserting some sample data 
+
+INSERT INTO app.tasks (
+  task_description
+) VALUES (
+  'task1'
+); 
+INSERT INTO app.subtasks (
+  subtask_description, subtask_task_id
+) VALUES (
+  'a sample subtask 1',
+  (SELECT task_id FROM app.tasks WHERE app.tasks.task_description = 'task1')
+); 
+
+
 
 
 
