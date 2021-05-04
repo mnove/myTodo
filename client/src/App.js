@@ -12,6 +12,7 @@ import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 
 // redux
 import { connect } from "react-redux";
@@ -24,7 +25,7 @@ function App(props) {
     console.log("reached here")
   }, []);
 
-  
+
   return (
     <BrowserRouter>
       <Nav />
@@ -32,6 +33,15 @@ function App(props) {
         <Route path="/" component={Home} exact />
         <Route path="/login" component={Login} exact />
         <Route path="/register" component={Register} exact />
+        <ProtectedRoute
+        path="/dashboard"
+        component={Dashboard}
+        exact
+
+        />
+        
+
+        
        
         <Route path="*" component={() => "404 NOT FOUND"} />
       </Switch>

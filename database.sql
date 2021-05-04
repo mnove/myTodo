@@ -63,10 +63,20 @@ FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
 
+CREATE TABLE app.users (
+    user_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    user_first_name VARCHAR (100) NOT NULL,
+    user_last_name VARCHAR (100) NOT NULL,
+    user_email VARCHAR (150) UNIQUE NOT NULL,
+    user_password VARCHAR (100) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
 -- create table todo in app schema
 CREATE TABLE app.tasks (
     task_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    task_owner UUID NOT NULL REFERENCES app.users(user_id),
     task_description VARCHAR (255) NOT NULL,
     task_is_completed BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -82,23 +92,31 @@ CREATE TABLE app.subtasks (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE app.users (
-    user_id UUID NOT NULL DEFAULT uuid_generate_v4(),
-    user_first_name VARCHAR (100) NOT NULL,
-    user_last_name VARCHAR (100) NOT NULL,
-    user_email VARCHAR (150) UNIQUE NOT NULL,
-    user_password VARCHAR (100) NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
+
 
 
 -- inserting some sample data 
 
-INSERT INTO app.tasks (
-  task_description
+INSERT INTO app.users (
+  user_first_name,
+  user_last_name,
+  user_email,
+  user_password
+
 ) VALUES (
-  'task1'
+  'Mark',
+  'Markus',
+  'mark@gmail.com',
+  'password123'
+); 
+
+
+
+INSERT INTO app.tasks (
+  task_description, task_owner
+) VALUES (
+  'task1',
+  'd8de13f8-eb8f-47f3-a2a8-89a8e80d43a8'
 ); 
 INSERT INTO app.subtasks (
   subtask_description, subtask_task_id

@@ -12,14 +12,14 @@ const PORT = process.env.PORT || 5000;
 
 // ROUTES
 const registrationRoutes = require("./routes/registrationRoutes");
-const todoRoutes = require("./routes/todoRoutes");
+const tasksRoutes = require("./routes/tasksRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 
 // middleware
 app.use(cors({
   origin: ["http://localhost:3000"],
-  methods: ["GET", "POST", "PUT"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
@@ -42,10 +42,10 @@ if (process.env.NODE_ENV === "production") {
 
 // DEFINING & SCOPING ROUTES
 
-app.use('/api/todos', todoRoutes);
+app.use('/api/tasks', tasksRoutes);
 app.use('/api/register', registrationRoutes);
 app.use('/api/auth', authRoutes);
-// app.use('/api/user', userRoutes); // TODO
+
 
 
 // ROUTES
