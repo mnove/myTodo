@@ -29,6 +29,9 @@ const Nav = (props) => {
               <Link className="nav-link" to="/dashboard">
                 Dashboard
               </Link>
+              <Link className="nav-link" to="/test">
+                Test Component
+              </Link>
 
               <Link className="nav-link" to="/login" onClick={handleLogout}>
                 Logout

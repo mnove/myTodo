@@ -1,10 +1,14 @@
 import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
 
-const EditTodo = ({ todo }) => {
-  const [todoId, setTodoId] = useState(todo.id);
-  const [title, setTitle] = useState(todo.title);
-  console.log("todo title", title)
-  console.log("ID", todoId)
+// redux
+import { connect } from "react-redux";
+
+const EditTodo = (props) => {
+  const [todoId, setTodoId] = useState("");
+  const [title, setTitle] = useState("");
+  console.log("todo title", title);
+  console.log("ID", todoId);
 
   const handleOnChange = (e) => {
     setTitle(e.target.value);
@@ -20,10 +24,7 @@ const EditTodo = ({ todo }) => {
         body: JSON.stringify(body),
       };
 
-      const response = await fetch(
-        `api/todos/${todoId}`,
-        options
-      );
+      const response = await fetch(`api/todos/${todoId}`, options);
       console.log(response);
 
       if (response.ok) {
@@ -37,9 +38,22 @@ const EditTodo = ({ todo }) => {
     }
   };
 
+  // {console.log(props.selectedTask[0].task_id)}
+
   return (
     <Fragment>
-      <button
+      <Link
+        to={{
+          pathname: `/task/${props.selectedTask[0].task_id}`,
+        }}
+        style={{ textDecoration: "none" }}
+      >
+       Open Task
+      </Link>
+
+
+
+      {/* <button
         type="button"
         className="btn btn-primary"
         data-toggle="modal"
@@ -83,9 +97,21 @@ const EditTodo = ({ todo }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </Fragment>
   );
 };
 
-export default EditTodo;
+// REDUX //
+
+// mapping store state to props
+const mapStateToProps = (state, ownProps) => {
+  return {
+    selectedTask: state.tasks.data.filter(
+      (task) => task.task_id === ownProps.taskId
+    ),
+  };
+};
+
+// connect react components to Redux store
+export default connect(mapStateToProps, null)(EditTodo);

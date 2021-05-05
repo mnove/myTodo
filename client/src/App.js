@@ -13,18 +13,18 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import TestComponent from "./components/TestComponent";
+import Task from "./components/Task";
 
 // redux
 import { connect } from "react-redux";
 import { verifyUserLogin } from "./redux/index";
 
 function App(props) {
-
   useEffect(() => {
     props.checkAuthStatus(); // checking authentication status of user on each reload
-    console.log("reached here")
+    console.log("reached here");
   }, []);
-
 
   return (
     <BrowserRouter>
@@ -33,16 +33,10 @@ function App(props) {
         <Route path="/" component={Home} exact />
         <Route path="/login" component={Login} exact />
         <Route path="/register" component={Register} exact />
-        <ProtectedRoute
-        path="/dashboard"
-        component={Dashboard}
-        exact
+        <ProtectedRoute path="/dashboard" component={Dashboard} exact />
+        <ProtectedRoute path="/task/:id" component={Task} exact />
+        <ProtectedRoute path="/test" component={TestComponent} exact />
 
-        />
-        
-
-        
-       
         <Route path="*" component={() => "404 NOT FOUND"} />
       </Switch>
       {/* <Fragment>

@@ -8,10 +8,14 @@ const create_task = async (req, res) => {
     const userId = req.userId; // passed from the authMiddleware/verifyJWT
 
     const newTask = await pool.query(
-      "INSERT INTO app.tasks (task_description, task_owner) VALUES ($1, $2)",
+      "INSERT INTO app.tasks (task_description, task_owner) VALUES ($1, $2) RETURNING *",
       [description, userId]
     );
-    res.json(newTask.rows[0]);
+
+   
+    console.log(newTask.rows[0]); 
+    
+     res.status(201).send(newTask.rows);
   } catch (error) {
     console.error(error);
   }
@@ -52,11 +56,11 @@ const update_task = async (req, res) => {
     const { taskId } = req.params;
     const { description } = req.body;
     const updateTask = await pool.query(
-      "UPDATE app.tasks SET task_description = $1 WHERE task_id = $2",
+      "UPDATE app.tasks SET task_description = $1 WHERE task_id = $2 RETURNING *",
       [description, taskId]
     );
     console.log(updateTask);
-    res.json("Task was updated");
+    res.status(202).send(updateTask.rows);
   } catch (error) {
     console.error(error);
   }
@@ -66,11 +70,11 @@ const delete_task = async (req, res) => {
   try {
     const { taskId } = req.params;
     const deleteTask = await pool.query(
-      "DELETE FROM app.tasks WHERE task_id = $1",
+      "DELETE FROM app.tasks WHERE task_id = $1 RETURNING *",
       [taskId]
     );
     console.log(deleteTask);
-    res.json("Task was deleted");
+    res.status(200).send(deleteTask.rows);
   } catch (error) {
     console.error(error);
   }

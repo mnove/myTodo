@@ -3,53 +3,54 @@ import React, { Fragment, useEffect, useState } from "react";
 import EditTodo from "./EditTodo";
 
 
-const ListTodos = () => {
-  const [todos, setTodos] = useState([]);
+import { Link, withRouter } from "react-router-dom";
 
-  const getTodos = async () => {
-    try {
-      const response = await fetch("api/todos");
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        // console.log(jsonResponse);
-        setTodos(jsonResponse);
-        return jsonResponse;
-      }
-      throw new Error("Request failed!");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+// redux
+import { connect } from "react-redux";
+import { getAllTasks, deleteTask } from "../redux/index";
 
-  const handleDelete = async (id) => {
-    try {
-      const options = {
-        method: "DELETE",
-      };
 
-      const response = await fetch(
-        `api/todos/${id}`,
-        options
-      );
+// loading skeletons
+import Skeleton from "react-loading-skeleton";
 
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        console.log(jsonResponse);
-        setTodos(todos.filter(todos => todos.id !== id));
-        return jsonResponse;
-      }
-      throw new Error("Request failed!");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const ListTodos = ( props ) => {
+
 
   useEffect(() => {
-    getTodos();
+    props.getAllTasks();
+    console.log("reached here useeffect");
+
   }, []);
 
-  return (
-    <Fragment>
+ 
+
+  const handleDelete = async (taskId) => {
+    console.log("reached task delete");
+    props.deleteTask(taskId);
+
+  };
+
+  const contentToRender = () => {
+    if (props.tasks.loading) {
+      return (
+        <Fragment>
+          <div style={{ maxWidth: 600}}>
+            <Skeleton count={4} height={60} />
+          </div>
+
+        </Fragment>
+      );
+    } else if (props.tasks.error) {
+      return (
+        <Fragment>
+          <p>error. Please try again later.</p>
+           <h2>{props.tasks.error}</h2>
+          
+        </Fragment>
+      );
+    } else {
+      return (
+        <Fragment>
       <h2>Your Todos</h2>
       <table className="table table-striped text-center">
         <thead>
@@ -60,21 +61,16 @@ const ListTodos = () => {
           </tr>
         </thead>
         <tbody>
-          {/* <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
-          </tr> */}
-
-          {todos.map((todo, index) => {
+          {console.log(props.tasks.data)}
+          {props.tasks.data.map((task, index) => {
             return (
-              <tr key={todo.id}>
-                <th>{todo.title}</th>
-                <th>{<EditTodo todo={todo}/>}</th>
+              <tr key={task.task_id}>
+                <th>{task.task_description}</th>
+                <th>{<EditTodo taskId={task.task_id}/>}</th>
                 <th>
                   <button
                     className="btn btn-danger"
-                    onClick={() => handleDelete(todo.id)}
+                     onClick={() => handleDelete(task.task_id)}
                   >
                     Delete
                   </button>
@@ -85,7 +81,33 @@ const ListTodos = () => {
         </tbody>
       </table>
     </Fragment>
+      );
+    }
+  };
+
+  return (
+    <Fragment>
+    {contentToRender()}
+    </Fragment>
   );
 };
 
-export default ListTodos;
+
+// REDUX //
+
+// mapping store state to props
+const mapStateToProps = (state) => {
+  return {
+    tasks: state.tasks,
+  };
+};
+// mapping action creators to props
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllTasks: () => dispatch(getAllTasks()),
+    deleteTask: (taskId) => dispatch(deleteTask(taskId)),
+  };
+};
+
+// connect react components to Redux store
+export default connect(mapStateToProps, mapDispatchToProps)(ListTodos);
