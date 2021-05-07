@@ -13,7 +13,7 @@ import {
   DELETE_TASK_FAILURE,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
-  UPDATE_TASK_FAILURE
+  UPDATE_TASK_FAILURE,
 } from "./tasksTypes";
 
 const initialState = {
@@ -93,7 +93,9 @@ const tasksReducer = (state = initialState, action) => {
     case DELETE_TASK_SUCCESS:
       return {
         loading: false,
-        data: state.data.filter((task, index) => task.task_id !== action.payload),
+        data: state.data.filter(
+          (task, index) => task.task_id !== action.payload
+        ),
         error: "",
       };
 
@@ -104,25 +106,33 @@ const tasksReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
-      case UPDATE_TASK_REQUEST:
+    case UPDATE_TASK_REQUEST:
       return {
         ...state,
         loading: true,
       };
 
     case UPDATE_TASK_SUCCESS:
+      // const { newDescription, taskId } = action.payload;
+
       return {
         loading: false,
-        data: state.data.filter((task, index) => task.task_id !== action.payload),
         error: "",
+        data: state.data.map((task) => {
+          if (task.task_id === action.payload.taskId) {
+            task.task_description = action.payload.newDescription;
+          }
+          
+          return task;
+        }),
       };
 
     case UPDATE_TASK_FAILURE:
       return {
         loading: false,
         data: [],
-        error: action.payload,UPDATE
-      }
+        error: action.payload,
+      };
     default:
       return state;
   }

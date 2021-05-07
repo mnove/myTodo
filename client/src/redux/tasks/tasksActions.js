@@ -208,7 +208,10 @@ const updateTaskRequest = () => {
 const updateTaskSuccess = (newDescription, taskId) => {
   return {
     type: UPDATE_TASK_SUCCESS,
-    payload: data,
+    payload: {
+      newDescription: newDescription,
+      taskId: taskId
+    },
   };
 };
 
@@ -227,15 +230,15 @@ export const updateTask = (newDescription, taskId) => {
     const response = await tasksApi.updateOne(newDescription, taskId);
 
     if (response.error) {
-      // console.log(response);
+       console.log(response);
       console.log("MESSAGE: ", response.error.message);
       const errorMsg = response.error.message;
       dispatch(updateTaskFailure(errorMsg));
     } else {
-      const data = response.data[0].task_id;
-      console.log("this is the response payload", response.data)
-
-      dispatch(updateTaskSuccess(data));
+      const newDescription = response.data[0].task_description;
+      const taskId = response.data[0].task_id;
+      dispatch(updateTaskSuccess(newDescription, taskId));
+      
     }
   };
 };

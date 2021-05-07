@@ -62,6 +62,7 @@ const update_task = async (req, res) => {
     console.log(updateTask);
     res.status(202).send(updateTask.rows);
   } catch (error) {
+    res.status(400).send(error)
     console.error(error);
   }
 };

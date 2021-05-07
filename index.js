@@ -12,8 +12,9 @@ const PORT = process.env.PORT || 5000;
 
 // ROUTES
 const registrationRoutes = require("./routes/registrationRoutes");
-const tasksRoutes = require("./routes/tasksRoutes");
 const authRoutes = require("./routes/authRoutes");
+const tasksRoutes = require("./routes/tasksRoutes");
+const subtasksRoutes = require("./routes/subtasksRoutes");
 
 
 // middleware
@@ -42,11 +43,11 @@ if (process.env.NODE_ENV === "production") {
 
 // DEFINING & SCOPING ROUTES
 
-app.use('/api/tasks', tasksRoutes);
+
 app.use('/api/register', registrationRoutes);
 app.use('/api/auth', authRoutes);
-
-
+app.use('/api/tasks', tasksRoutes);
+app.use('/api/subtasks', subtasksRoutes);
 
 // ROUTES
 
