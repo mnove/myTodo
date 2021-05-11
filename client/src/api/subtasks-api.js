@@ -98,4 +98,22 @@ export const subtasksApi = {
       );
     },
 
+     /**
+   * get all subtasks by task Id 
+   * @param {string} taskId 
+   */
+      getAllSubtasksByTaskId: async function (taskId) {
+
+        return await resolve(
+          axios({
+            method: "GET",
+            url: `api/subtasks/all/${taskId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: "include", // to get the cookie in every request
+          }).then((res) => {
+            return res.data;
+          })
+        );
+      },
+
 };

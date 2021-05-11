@@ -5,6 +5,8 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
+import '@elastic/eui/dist/eui_theme_amsterdam_light.css';
+
 
 ReactDOM.render(
   <React.StrictMode>

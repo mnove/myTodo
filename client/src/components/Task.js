@@ -1,7 +1,23 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import { Link, withRouter } from "react-router-dom";
-// import {tasksApi} from "../api/tasks-api";
+import Subtask from "./Subtask";
+
+import {
+  EuiPanel,
+  EuiCode,
+  EuiSpacer,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiButton,
+  EuiText,
+} from "@elastic/eui";
+
+
+import {PageContainer} from "./styled_components/globalPageComponents";
+
+
+import styled from "styled-components";
 
 // redux
 import { connect } from "react-redux";
@@ -9,6 +25,14 @@ import { getAllTasks, updateTask } from "../redux/index";
 
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
+
+const TaskHeader = styled(EuiPanel)``;
+
+const TaskDate = styled(EuiText)`
+  background-color: #e6e6e6;
+  border-radius: 6px;
+  padding: 0.4rem;
+`;
 
 const Task = (props) => {
   const [description, setDescription] = useState(
@@ -20,10 +44,10 @@ const Task = (props) => {
     setDescription(e.target.value);
   };
   const handleSave = () => {
-      console.log("reached here ", description,'   ', taskId);
-      console.log('dddddd');
-      console.log(taskId);
-    props.updateTask(description, taskId );
+    console.log("reached here ", description, "   ", taskId);
+    console.log("dddddd");
+    console.log(taskId);
+    props.updateTask(description, taskId);
   };
 
   const taskData = props.tasks[0];
@@ -35,17 +59,67 @@ const Task = (props) => {
   dateUpdated = dateUpdated.toString();
 
   return (
-    <Fragment>
-      <h1>Task Component</h1>
-      <p>Task Id: {props.match.params.id}</p>
-      <p>Task Description: {taskData.task_description}</p>
-      <input value={description} onChange={(e) => handleOnChange(e)}></input>
-      <button onClick={handleSave}>Save</button>
-      <p>Task Created At: {dateCreated}</p>
-      <p>Last Updated At: {dateUpdated}</p>
-      <h3>Subtasks</h3>
-      <p>subtasks...</p>
-    </Fragment>
+    <>
+      <Fragment>
+        <h1>Task Component</h1>
+        <p>Task Id: {props.match.params.id}</p>
+        <p>Task Description: {taskData.task_description}</p>
+        <input value={description} onChange={(e) => handleOnChange(e)}></input>
+        <button onClick={handleSave}>Save</button>
+        <p>Task Created At: {dateCreated}</p>
+        <p>Last Updated At: {dateUpdated}</p>
+        <h3>Subtasks</h3>
+        
+      </Fragment>
+
+      <Fragment>
+      <PageContainer>
+        <TaskHeader paddingSize="l">
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiText>
+                <h4>Task Description</h4>
+              </EuiText>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          {""}
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiText>
+                <input
+                  value={description}
+                  onChange={(e) => handleOnChange(e)}
+                ></input>
+              </EuiText>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <div>
+                <EuiButton fill onClick={handleSave}>
+                  Save
+                </EuiButton>
+              </div>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          {""}
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiText>
+                <p>Task Created at:</p>
+              </EuiText>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <div>
+                <EuiText>
+                  <p>Task Created at:</p>
+                </EuiText>
+              </div>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </TaskHeader>
+        <Subtask />
+        </PageContainer>
+      </Fragment>
+    </>
   );
 };
 
@@ -63,8 +137,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllTasks: () => dispatch(getAllTasks()),
-    updateTask: (newDescription, taskId ) =>
-      dispatch(updateTask(newDescription, taskId )),
+    updateTask: (newDescription, taskId) =>
+      dispatch(updateTask(newDescription, taskId)),
   };
 };
 

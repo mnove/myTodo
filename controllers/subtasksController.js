@@ -81,9 +81,25 @@ const delete_subtask = async (req, res) => {
   }
 };
 
+const get_all_subtask_by_taskId = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const getAllSubtasksByTaskId = await pool.query(
+      "SELECT * FROM app.subtasks WHERE subtask_task_id = $1",
+      [taskId]
+    );
+    console.table(getAllSubtasksByTaskId.rows);
+    res.status(200).send(getAllSubtasksByTaskId.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error);
+  }
+};
+
 module.exports = {
   create_subtask,
   get_subtask,
   update_subtask,
   delete_subtask,
+  get_all_subtask_by_taskId
 };

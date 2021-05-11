@@ -1,5 +1,4 @@
 import {
-
     CREATE_NEW_SUBTASK_REQUEST,
     CREATE_NEW_SUBTASK_SUCCESS,
     CREATE_NEW_SUBTASK_FAILURE,
@@ -11,8 +10,11 @@ import {
     DELETE_SUBTASK_FAILURE,
     UPDATE_SUBTASK_REQUEST,
     UPDATE_SUBTASK_SUCCESS,
-    UPDATE_SUBTASK_FAILURE
-  } from "./tasksTypes";
+    UPDATE_SUBTASK_FAILURE,
+    GET_ALL_SUBTASKS_BY_TASK_ID_REQUEST,
+    GET_ALL_SUBTASKS_BY_TASK_ID_SUCCESS,
+    GET_ALL_SUBTASKS_BY_TASK_ID_FAILURE
+  } from "./subtasksTypes";
   
   import { subtasksApi } from "../../api/subtasks-api";
   
@@ -196,3 +198,47 @@ import {
       }
     };
   };
+
+    // GET ALL SUBTASKS BY TASK 
+  
+    const getAllSubtasksByTaskIdRequest = () => {
+      return {
+        type: GET_ALL_SUBTASKS_BY_TASK_ID_REQUEST,
+      };
+    };
+    
+    const getAllSubtasksByTaskIdSuccess = (subtasks) => {
+      return {
+        type: GET_ALL_SUBTASKS_BY_TASK_ID_SUCCESS,
+        payload: subtasks
+
+      };
+    };
+    
+    const getAllSubtasksByTaskIdFailure = (error) => {
+      return {
+        type: GET_ALL_SUBTASKS_BY_TASK_ID_FAILURE,
+        payload: error,
+      };
+    };
+    
+    export const getAllSubtasksByTaskId = (taskId) => {
+      return async (dispatch) => {
+        console.log("reached here in the dispatch actions");
+        dispatch(getAllSubtasksByTaskIdRequest());
+    
+        const response = await subtasksApi.getAllSubtasksByTaskId(taskId);
+    
+        if (response.error) {
+           console.log(response);
+          console.log("MESSAGE: ", response.error.message);
+          const errorMsg = response.error.message;
+          dispatch(getAllSubtasksByTaskIdFailure(errorMsg));
+        } else {
+          const subtasks = response.data;
+          console.log(subtasks);
+          dispatch(getAllSubtasksByTaskIdSuccess(subtasks));
+          
+        }
+      };
+    };
