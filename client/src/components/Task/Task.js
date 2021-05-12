@@ -1,7 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import { Link, withRouter } from "react-router-dom";
-import SubtaskContainer from "./SubtaskContainer";
+
+import {SubtaskContainer} from "./";
 
 import {
   EuiPanel,
@@ -14,14 +15,14 @@ import {
 } from "@elastic/eui";
 
 
-import {PageContainer} from "./styled_components/globalPageComponents";
+import {PageContainer} from "../_global_components/PageContainer";
 
 
 import styled from "styled-components";
 
 // redux
 import { connect } from "react-redux";
-import { getAllTasks, updateTask } from "../redux/index";
+import { getAllTasks, updateTask } from "../../redux/index";
 
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
@@ -105,6 +106,7 @@ const Task = (props) => {
         </TaskHeader>
         <SubtaskContainer/>
         </PageContainer>
+  
     </>
   );
 };

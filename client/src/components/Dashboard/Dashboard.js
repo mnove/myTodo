@@ -1,17 +1,17 @@
 import React, { Fragment} from "react";
 import { Link, withRouter } from "react-router-dom";
-import {PageContainer} from "../components/styled_components/globalPageComponents";
+import {PageContainer} from "../_global_components";
 
 
 
-import ListTodo from "../components/ListTodo";
-import InputTodo from "../components/InputTodo";
+import {ListTodo} from "./";
+import {InputTodo} from "./"
 
 // redux
 // import { connect } from "react-redux";
 // import { getUserData } from "../redux/index";
 
-const Dashboard = () => {
+export const Dashboard = () => {
   
 //   const PageContainer = styled.div`
 //   padding-top: 1rem;
@@ -34,5 +34,3 @@ const Dashboard = () => {
 };
 
 
-// connect react components to Redux store
-export default Dashboard;

@@ -15,7 +15,7 @@ import {
 
 // redux
 import { connect } from "react-redux";
-import { createNewTask } from "../redux/index";
+import { createNewTask } from "../../redux/index";
 
 
 const InputTodo = ( props ) => {
@@ -27,8 +27,7 @@ const InputTodo = ( props ) => {
 
  
 
-  
-  const onSubmitForm = async () => {
+const onSubmitForm = async () => {
     
     console.log(description);
      props.createNewTask(description); 
@@ -89,4 +88,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store
-export default connect(mapStateToProps, mapDispatchToProps)(InputTodo);
+ export default connect(mapStateToProps, mapDispatchToProps)(InputTodo);

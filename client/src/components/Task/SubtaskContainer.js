@@ -16,12 +16,12 @@ import {
 
 import styled from "styled-components";
 
-import Subtask from "./Subtask"
-import SubtaskAddOne from "./SubtaskAddOne";
+import {Subtask} from "./"
+import {SubtaskAddOne} from "./";
 
 // redux
 import { connect } from "react-redux";
-import { getAllSubtasksByTaskId } from "../redux/index";
+import { getAllSubtasksByTaskId } from "../../redux/index";
 
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
@@ -69,6 +69,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store and withRouter
-export default withRouter(
+ export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(SubtaskContainer)
 );

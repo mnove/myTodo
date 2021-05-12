@@ -14,9 +14,9 @@ import {
 
 // redux
 import { connect } from "react-redux";
-import { logoutUser } from "../redux/index";
+import { logoutUser } from "../../redux/index";
 
-const Nav = (props) => {
+ const Nav = (props) => {
   const handleLogout = async () => {
     await props.logoutUser();
      await props.history.push("/login");
@@ -112,4 +112,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store and React Router
-export default withRouter(connect(null, mapDispatchToProps)(Nav));
+ export default withRouter(connect(null, mapDispatchToProps)(Nav));

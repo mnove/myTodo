@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { withRouter } from "react-router-dom";
-import { userApi } from "../api/user-api";
+import { userApi } from "../../api/user-api";
 import Alert from "react-bootstrap/Alert";
 import {
   EuiPage,
@@ -16,7 +16,8 @@ import {
   EuiText,
 } from "@elastic/eui";
 import styled from "styled-components";
-import RegistrationForm from "../components/RegistrationForm";
+
+import {RegistrationForm} from "./RegistrationForm";
 
 const StyledEuiPage = styled(EuiPage)`
   flex: 1;
@@ -40,7 +41,7 @@ const StyledEuiText = styled(EuiText)`
       
     `;
 
-const Register = (props) => {
+ const Register = (props) => {
   return (
     <Fragment>
       <Fragment>
@@ -79,4 +80,4 @@ const Register = (props) => {
   );
 };
 
-export default withRouter(Register);
+ export default withRouter(Register);

@@ -1,25 +1,24 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import EditTodo from "./EditTodo";
-import ExampleTable from "./ExampleTable";
-import TaskItem from "./TaskItem";
+// import EditTodo from "./EditTodo";
+import {TaskItem} from "./";
 
 import { Link, withRouter } from "react-router-dom";
 
 
 // redux
 import { connect } from "react-redux";
-import { getAllTasks, deleteTask } from "../redux/index";
+import { getAllTasks, deleteTask } from "../../redux/index";
 
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
 
-const ListTodos = (props) => {
+const ListTodo = (props) => {
   useEffect(() => {
     props.getAllTasks();
   }, []);
 
-
+console.log(props)
 
   const contentToRender = () => {
     if (props.tasks.loading) {
@@ -79,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store
-export default connect(mapStateToProps, mapDispatchToProps)(ListTodos);
+export default connect(mapStateToProps, mapDispatchToProps)(ListTodo);

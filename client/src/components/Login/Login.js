@@ -6,9 +6,9 @@ import Container from "react-bootstrap/Container"
 
 // redux
 import { connect } from "react-redux";
-import { loginUser } from "../redux/index";
+import { loginUser } from "../../redux/index";
 
-const Login = (props) => {
+ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -128,5 +128,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-// connect react components to Redux store and React Router
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+

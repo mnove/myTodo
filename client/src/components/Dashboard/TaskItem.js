@@ -17,7 +17,7 @@ import styled from "styled-components";
 
 // redux
 import { connect } from "react-redux";
-import { deleteTask } from "../redux/index";
+import { deleteTask } from "../../redux/index";
 
 const StyledEuiPanel = styled(EuiPanel)`
   &:hover {
@@ -113,5 +113,5 @@ function TaskItem( props ) {
     };
   };
   
-  // connect react components to Redux store
-  export default withRouter(connect(null, mapDispatchToProps)(TaskItem));
+// connect react components to Redux store
+ export default withRouter(connect(null, mapDispatchToProps)(TaskItem));

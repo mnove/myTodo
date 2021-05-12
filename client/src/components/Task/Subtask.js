@@ -15,7 +15,7 @@ import styled from "styled-components";
 
 // redux
 import { connect } from "react-redux";
-import { deleteSubtask, updateSubtaskStatus } from "../redux/index";
+import { deleteSubtask, updateSubtaskStatus } from "../../redux/index";
 
 const SubTaskContainer = styled.div`
   background-color: ${(props) => (props.completed ? "#dedede" : "#ffffff")};
@@ -123,4 +123,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store
-export default connect(null, mapDispatchToProps)(Subtask);
+ export default connect(null, mapDispatchToProps)(Subtask);

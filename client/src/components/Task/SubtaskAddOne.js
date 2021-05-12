@@ -20,7 +20,7 @@ import styled from "styled-components";
 
 // redux
 import { connect } from "react-redux";
-import { createNewSubtask } from "../redux/index";
+import { createNewSubtask } from "../../redux/index";
 
 const SubtaskAddOneButtonContainer = styled.div`
   margin-top: 2rem;
@@ -106,4 +106,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store
-export default connect(null, mapDispatchToProps)(SubtaskAddOne);
+ export default connect(null, mapDispatchToProps)(SubtaskAddOne);
