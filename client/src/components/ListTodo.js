@@ -17,7 +17,6 @@ import Skeleton from "react-loading-skeleton";
 const ListTodos = (props) => {
   useEffect(() => {
     props.getAllTasks();
-    console.log("reached here useeffect");
   }, []);
 
 

@@ -57,9 +57,12 @@ export const getAllTasks = () => {
       const data = response.data;
 
       // Artificially slowing down the code execution to show loading screen in the component
-      setTimeout(() => {
+      // setTimeout(() => {
+      //   dispatch(getAllTasksSuccess(data));
+      // }, 500);
+
         dispatch(getAllTasksSuccess(data));
-      }, 500);
+
     }
   };
 };

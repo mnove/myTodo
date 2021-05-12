@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import { Link, withRouter } from "react-router-dom";
-import Subtask from "./Subtask";
+import SubtaskContainer from "./SubtaskContainer";
 
 import {
   EuiPanel,
@@ -60,19 +60,6 @@ const Task = (props) => {
 
   return (
     <>
-      <Fragment>
-        <h1>Task Component</h1>
-        <p>Task Id: {props.match.params.id}</p>
-        <p>Task Description: {taskData.task_description}</p>
-        <input value={description} onChange={(e) => handleOnChange(e)}></input>
-        <button onClick={handleSave}>Save</button>
-        <p>Task Created At: {dateCreated}</p>
-        <p>Last Updated At: {dateUpdated}</p>
-        <h3>Subtasks</h3>
-        
-      </Fragment>
-
-      <Fragment>
       <PageContainer>
         <TaskHeader paddingSize="l">
           <EuiFlexGroup>
@@ -110,15 +97,14 @@ const Task = (props) => {
             <EuiFlexItem>
               <div>
                 <EuiText>
-                  <p>Task Created at:</p>
+                  <p>{dateCreated}</p>
                 </EuiText>
               </div>
             </EuiFlexItem>
           </EuiFlexGroup>
         </TaskHeader>
-        <Subtask />
+        <SubtaskContainer/>
         </PageContainer>
-      </Fragment>
     </>
   );
 };

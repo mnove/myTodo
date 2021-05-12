@@ -11,6 +11,9 @@ import {
   UPDATE_SUBTASK_REQUEST,
   UPDATE_SUBTASK_SUCCESS,
   UPDATE_SUBTASK_FAILURE,
+  UPDATE_SUBTASK_STATUS_REQUEST,
+  UPDATE_SUBTASK_STATUS_SUCCESS,
+  UPDATE_SUBTASK_STATUS_FAILURE,
   GET_ALL_SUBTASKS_BY_TASK_ID_REQUEST,
   GET_ALL_SUBTASKS_BY_TASK_ID_SUCCESS,
   GET_ALL_SUBTASKS_BY_TASK_ID_FAILURE,
@@ -74,7 +77,7 @@ const subtasksReducer = (state = initialState, action) => {
       return {
         loading: false,
         data: state.data.filter(
-          (task, index) => task.task_id !== action.payload
+          (subtask, index) => subtask.subtask_id !== action.payload
         ),
         error: "",
       };
@@ -98,16 +101,53 @@ const subtasksReducer = (state = initialState, action) => {
       return {
         loading: false,
         error: "",
-        data: state.data.map((task) => {
-          if (task.task_id === action.payload.taskId) {
-            task.task_description = action.payload.newDescription;
+        data: state.data.map((subtask) => {
+          if (subtask.task_id === action.payload.subtaskId) {
+            subtask.task_is_completed = action.payload.newStatus;
           }
 
-          return task;
+          return subtask;
         }),
       };
 
     case UPDATE_SUBTASK_FAILURE:
+      return {
+        loading: false,
+        data: [],
+        error: action.payload,
+      };
+
+    case UPDATE_SUBTASK_STATUS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case UPDATE_SUBTASK_STATUS_SUCCESS:
+      // const { newDescription, taskId } = action.payload;
+
+      console.log(state.data);
+      
+      return {
+        loading: false,
+        error: "",
+        data: 
+        
+        
+        state.data.map((subtask) => {
+          if (subtask.subtask_id === action.payload.subtaskId) {
+            console.log("reached");
+            return {
+              ...subtask,
+              subtask_is_completed:  action.payload.newStatus
+            }
+          }
+
+          return subtask;
+        }),
+      };
+
+    case UPDATE_SUBTASK_STATUS_FAILURE:
       return {
         loading: false,
         data: [],
@@ -121,6 +161,7 @@ const subtasksReducer = (state = initialState, action) => {
       };
 
     case GET_ALL_SUBTASKS_BY_TASK_ID_SUCCESS:
+     
       return {
         loading: false,
         data: action.payload,

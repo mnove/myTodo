@@ -12,6 +12,7 @@ router.post("/:taskId", authMiddleware.verifyJWT, subtasksController.create_subt
 
 router.get("/:subtaskId", authMiddleware.verifyJWT, subtasksController.get_subtask); // Get a specific subtask
 router.put("/:subtaskId", authMiddleware.verifyJWT, subtasksController.update_subtask); // Update a specific subtask
+router.put("/status/:subtaskId", authMiddleware.verifyJWT, subtasksController.update_subtask_status); // Update a specific subtask status
 router.delete("/:subtaskId", authMiddleware.verifyJWT, subtasksController.delete_subtask); // Delete a specific subtask
 router.get("/all/:taskId", authMiddleware.verifyJWT, subtasksController.get_all_subtask_by_taskId); // Get ALL subtasks by parent taskId 
 module.exports = router;

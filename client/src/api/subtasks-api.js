@@ -5,8 +5,6 @@ const axios = require("axios").create({
 });
 
 export const subtasksApi = {
-
-
   /**
    * create a new subtask
    * @param {string} taskId
@@ -14,11 +12,9 @@ export const subtasksApi = {
    */
 
   createOne: async function (taskId, description) {
-
     let newSubtask = {
-      description: description
+      description: description,
     };
-
 
     return await resolve(
       axios({
@@ -33,87 +29,102 @@ export const subtasksApi = {
     );
   },
 
-
-
-   /**
+  /**
    * get a subtask by subtaskId
    * @param {string} subtaskId
    */
 
-    getOne: async function (subtaskId) {
+  getOne: async function (subtaskId) {
+    return await resolve(
+      axios({
+        method: "GET",
+        url: `api/subtasks/${subtaskId}`,
+        headers: { "Content-Type": "application/json" },
+        withCredentials: "include", // to get the cookie in every request
+      }).then((res) => {
+        return res.data;
+      })
+    );
+  },
 
-      return await resolve(
-        axios({
-          method: "GET",
-          url: `api/subtasks/${subtaskId}`,
-          headers: { "Content-Type": "application/json" },
-          withCredentials: "include", // to get the cookie in every request
-        }).then((res) => {
-          return res.data;
-        })
-      );
-    },
-
-
-    /**
-   * get a subtask by subtaskId
+  /**
+   * update a subtask by subtaskId
    * @param {string} newDescription
-   * @param {string} subtaskId 
+   * @param {string} subtaskId
    */
-     updateOne: async function (subtaskId, newDescription) {
+  updateOne: async function (subtaskId, newDescription) {
+    let updatedSubtask = {
+      description: newDescription,
+    };
 
-      let updatedSubtask = {
-        description: newDescription
-      }
+    return await resolve(
+      axios({
+        method: "PUT",
+        url: `api/subtasks/${subtaskId}`,
+        data: updatedSubtask,
+        headers: { "Content-Type": "application/json" },
+        withCredentials: "include", // to get the cookie in every request
+      }).then((res) => {
+        return res.data;
+      })
+    );
+  },
 
-      return await resolve(
-        axios({
-          method: "PUT",
-          url: `api/subtasks/${subtaskId}`,
-          data: updatedSubtask,
-          headers: { "Content-Type": "application/json" },
-          withCredentials: "include", // to get the cookie in every request
-        }).then((res) => {
-          return res.data;
-        })
-      );
-    },
+  /**
+   * update a subtask by subtaskId
+   * @param {string} subtaskId
+   * @param {string} newStatus
+   
+   */
+   updateSubtaskStatus: async function (subtaskId, newStatus) {
+    let updatedSubtaskStatus = {
+      newStatus: newStatus,
+    };
 
-    
-    /**
+    return await resolve(
+      axios({
+        method: "PUT",
+        url: `api/subtasks/status/${subtaskId}`,
+        data: updatedSubtaskStatus,
+        headers: { "Content-Type": "application/json" },
+        withCredentials: "include", // to get the cookie in every request
+      }).then((res) => {
+        return res.data;
+      })
+    );
+  },
+
+  /**
    * delete a subtask by subtaskId
-   * @param {string} subtaskId 
+   * @param {string} subtaskId
    */
-     deleteOne: async function (subtaskId) {
+  deleteOne: async function (subtaskId) {
+    return await resolve(
+      axios({
+        method: "DELETE",
+        url: `api/subtasks/${subtaskId}`,
+        headers: { "Content-Type": "application/json" },
+        withCredentials: "include", // to get the cookie in every request
+      }).then((res) => {
+        return res.data;
+      })
+    );
+  },
 
-      return await resolve(
-        axios({
-          method: "DELETE",
-          url: `api/subtasks/${subtaskId}`,
-          headers: { "Content-Type": "application/json" },
-          withCredentials: "include", // to get the cookie in every request
-        }).then((res) => {
-          return res.data;
-        })
-      );
-    },
-
-     /**
-   * get all subtasks by task Id 
-   * @param {string} taskId 
+  /**
+   * get all subtasks by task Id
+   * @param {string} taskId
    */
-      getAllSubtasksByTaskId: async function (taskId) {
-
-        return await resolve(
-          axios({
-            method: "GET",
-            url: `api/subtasks/all/${taskId}`,
-            headers: { "Content-Type": "application/json" },
-            withCredentials: "include", // to get the cookie in every request
-          }).then((res) => {
-            return res.data;
-          })
-        );
-      },
-
+  getAllSubtasksByTaskId: async function (taskId) {
+    return await resolve(
+      axios({
+        method: "GET",
+        url: `api/subtasks/all/${taskId}`,
+        headers: { "Content-Type": "application/json" },
+        withCredentials: "include", // to get the cookie in every request
+      }).then((res) => {
+        return res.data;
+      })
+    );
+  },
 };
