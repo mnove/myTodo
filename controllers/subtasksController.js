@@ -52,13 +52,32 @@ const get_subtask = async (req, res) => {
 const update_subtask = async (req, res) => {
   try {
     const { subtaskId } = req.params;
-    const { description } = req.body;
+    const { newStatus } = req.body;
     const updateSubtask = await pool.query(
       "UPDATE app.subtasks SET subtask_description = $1 WHERE subtask_id = $2 RETURNING *",
-      [description, subtaskId]
+      [newStatus, subtaskId]
     );
     console.log(updateSubtask);
     res.status(202).send(updateSubtask.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error);
+    
+  }
+};
+
+
+const update_subtask_status = async (req, res) => {
+  try {
+    const { subtaskId } = req.params;
+    const { newStatus } = req.body;
+    console.log("status recieved", newStatus)
+    const updateSubtaskStatus = await pool.query(
+      "UPDATE app.subtasks SET subtask_is_completed = $1 WHERE subtask_id = $2 RETURNING *",
+      [newStatus, subtaskId]
+    );
+
+    res.status(202).send(updateSubtaskStatus.rows);
   } catch (error) {
     console.error(error);
     res.status(400).send(error);
@@ -100,6 +119,7 @@ module.exports = {
   create_subtask,
   get_subtask,
   update_subtask,
+  update_subtask_status,
   delete_subtask,
   get_all_subtask_by_taskId
 };

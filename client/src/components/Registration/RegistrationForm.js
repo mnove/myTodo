@@ -20,18 +20,18 @@ import {
 
 // redux
 import { connect } from "react-redux";
-import { getAllTasks, updateTask } from "../redux/index";
+import { getAllTasks, updateTask } from "../../redux/index";
 
 // api 
-import {userApi} from "../api/user-api";
+import {userApi} from "../../api/user-api";
 
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
 
 //validation rules
-import { registerFormValidationsRules } from "../utils/validations/registrationFormValidations";
+import { registerFormValidationsRules } from "../../utils/validations/registrationFormValidations";
 
-const RegistrationForm = (props) => {
+export const RegistrationForm = (props) => {
   // form inputs
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -322,6 +322,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store and withRouter
-export default withRouter(
+ withRouter(
   connect(mapStateToProps, mapDispatchToProps)(RegistrationForm)
 );

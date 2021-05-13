@@ -5,16 +5,15 @@ import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 //components
-import InputTodo from "./components/InputTodo";
-import ListTodos from "./components/ListTodo";
+
 import ProtectedRoute from "./components/protectedRoute";
-import Nav from "./components/Nav";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import {Nav} from "./components/Navbar";
+import {Home} from "./components/Home";
+import {Login} from "./components/Login";
+import {Register} from "./components/Registration";
+import {Dashboard} from "./components/Dashboard";
 import TestComponent from "./components/TestComponent";
-import Task from "./components/Task";
+import {Task} from "./components/Task/index";
 
 // redux
 import { connect } from "react-redux";

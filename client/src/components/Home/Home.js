@@ -5,7 +5,7 @@ import React, { Fragment} from "react";
 // import { connect } from "react-redux";
 // import { getUserData } from "../redux/index";
 
-const Home = () => {
+export const Home = () => {
   
   
 
@@ -18,5 +18,3 @@ const Home = () => {
 
 
 
-// connect react components to Redux store
-export default Home;

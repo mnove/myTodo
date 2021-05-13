@@ -11,6 +11,9 @@ import {
     UPDATE_SUBTASK_REQUEST,
     UPDATE_SUBTASK_SUCCESS,
     UPDATE_SUBTASK_FAILURE,
+    UPDATE_SUBTASK_STATUS_REQUEST,
+    UPDATE_SUBTASK_STATUS_SUCCESS,
+    UPDATE_SUBTASK_STATUS_FAILURE,
     GET_ALL_SUBTASKS_BY_TASK_ID_REQUEST,
     GET_ALL_SUBTASKS_BY_TASK_ID_SUCCESS,
     GET_ALL_SUBTASKS_BY_TASK_ID_FAILURE
@@ -153,7 +156,8 @@ import {
     };
   };
   
-  // UPDATE A TASK BY ID
+  //! UPDATE A TASK BY ID
+  //! TO REVIEW!!! 
   
   const updateSubtaskRequest = () => {
     return {
@@ -161,12 +165,12 @@ import {
     };
   };
   
-  const updateSubtaskSuccess = (newDescription, taskId) => {
+  const updateSubtaskSuccess = (subtaskId, newStatus) => {
     return {
       type: UPDATE_SUBTASK_SUCCESS,
       payload: {
-        newDescription: newDescription,
-        taskId: taskId
+        newStatus: newStatus,
+        subtaskId: subtaskId
       },
     };
   };
@@ -178,12 +182,12 @@ import {
     };
   };
   
-  export const updateSubtask = (subtaskId, newDescription) => {
+  export const updateSubtask = (subtaskId, newStatus) => {
     return async (dispatch) => {
       console.log("reached here in the dispatch actions");
       dispatch(updateSubtaskRequest());
   
-      const response = await subtasksApi.updateOne(subtaskId, newDescription);
+      const response = await subtasksApi.updateOne(subtaskId, newStatus);
   
       if (response.error) {
          console.log(response);
@@ -191,13 +195,61 @@ import {
         const errorMsg = response.error.message;
         dispatch(updateSubtaskFailure(errorMsg));
       } else {
-        const newDescription = response.data[0].subtask_description;
+        const newStatus = response.data[0].subtask_is_completed;
         const subtaskId = response.data[0].subtask_id;
-        dispatch(updateSubtaskSuccess(newDescription, subtaskId));
+        dispatch(updateSubtaskSuccess(subtaskId, newStatus ));
         
       }
     };
   };
+
+    // UPDATE A SUBTASK STATUS BY ID
+  
+    const updateSubtaskStatusRequest = () => {
+      return {
+        type: UPDATE_SUBTASK_STATUS_REQUEST,
+      };
+    };
+    
+    const updateSubtaskStatusSuccess = (subtaskId, newStatus) => {
+
+     
+      return {
+        type: UPDATE_SUBTASK_STATUS_SUCCESS,
+        payload: {
+          newStatus: newStatus,
+          subtaskId: subtaskId
+        },
+      };
+    };
+    
+    const updateSubtaskStatusFailure = (error) => {
+      return {
+        type: UPDATE_SUBTASK_STATUS_FAILURE,
+        payload: error,
+      };
+    };
+    
+    export const updateSubtaskStatus = (subtaskId, newStatus) => {
+      return async (dispatch) => {
+        console.log("reached here in the dispatch actions");
+        dispatch(updateSubtaskStatusRequest());
+    
+        const response = await subtasksApi.updateSubtaskStatus(subtaskId, newStatus);
+    
+        if (response.error) {
+           console.log(response);
+          console.log("MESSAGE: ", response.error.message);
+          const errorMsg = response.error.message;
+          dispatch(updateSubtaskStatusFailure(errorMsg));
+        } else {
+          const newStatus = response.data[0].subtask_is_completed;
+          const subtaskId = response.data[0].subtask_id;
+          dispatch(updateSubtaskStatusSuccess(subtaskId, newStatus ));
+          
+        }
+      };
+    };
 
     // GET ALL SUBTASKS BY TASK 
   

@@ -1,7 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import { Link, withRouter } from "react-router-dom";
-import Subtask from "./Subtask";
+
+import {SubtaskContainer} from "./";
 
 import {
   EuiPanel,
@@ -14,14 +15,14 @@ import {
 } from "@elastic/eui";
 
 
-import {PageContainer} from "./styled_components/globalPageComponents";
+import {PageContainer} from "../_global_components/PageContainer";
 
 
 import styled from "styled-components";
 
 // redux
 import { connect } from "react-redux";
-import { getAllTasks, updateTask } from "../redux/index";
+import { getAllTasks, updateTask } from "../../redux/index";
 
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
@@ -60,19 +61,6 @@ const Task = (props) => {
 
   return (
     <>
-      <Fragment>
-        <h1>Task Component</h1>
-        <p>Task Id: {props.match.params.id}</p>
-        <p>Task Description: {taskData.task_description}</p>
-        <input value={description} onChange={(e) => handleOnChange(e)}></input>
-        <button onClick={handleSave}>Save</button>
-        <p>Task Created At: {dateCreated}</p>
-        <p>Last Updated At: {dateUpdated}</p>
-        <h3>Subtasks</h3>
-        
-      </Fragment>
-
-      <Fragment>
       <PageContainer>
         <TaskHeader paddingSize="l">
           <EuiFlexGroup>
@@ -110,15 +98,15 @@ const Task = (props) => {
             <EuiFlexItem>
               <div>
                 <EuiText>
-                  <p>Task Created at:</p>
+                  <p>{dateCreated}</p>
                 </EuiText>
               </div>
             </EuiFlexItem>
           </EuiFlexGroup>
         </TaskHeader>
-        <Subtask />
+        <SubtaskContainer/>
         </PageContainer>
-      </Fragment>
+  
     </>
   );
 };
