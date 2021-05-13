@@ -22,6 +22,7 @@ const TaskAdd = ( props ) => {
   const [description, setDescription] = useState("");
 
   const handleChange = (e) => {
+
     setDescription(e.target.value);
   };
 
@@ -29,8 +30,13 @@ const TaskAdd = ( props ) => {
 
 const onSubmitForm = async () => {
     
-    console.log(description);
-     props.createNewTask(description); 
+    console.log(description.length);
+    if (description.length > 0) {
+      props.createNewTask(description); 
+    } else {
+      return false;
+    }
+    
   
   };
 
@@ -57,10 +63,11 @@ const onSubmitForm = async () => {
           fullWidth
           aria-label="An example of search with fullWidth"
           onChange={handleChange}
+          data-testid="input"
         />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiButton onClick={onSubmitForm}>Add Task</EuiButton>
+        <EuiButton onClick={onSubmitForm} data-testid="button">Add Task</EuiButton>
       </EuiFlexItem>
     </EuiFlexGroup>
 
@@ -86,6 +93,7 @@ const mapDispatchToProps = (dispatch) => {
     createNewTask: (description) => dispatch(createNewTask(description)),
   };
 };
+
 
 // connect react components to Redux store
  export default connect(mapStateToProps, mapDispatchToProps)(TaskAdd);
