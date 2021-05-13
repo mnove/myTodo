@@ -15,10 +15,10 @@ import {
 
 // redux
 import { connect } from "react-redux";
-import { createNewTask } from "../../redux/index";
+import { createNewTask } from "../../../redux/index";
 
 
-const InputTodo = ( props ) => {
+const TaskAdd = ( props ) => {
   const [description, setDescription] = useState("");
 
   const handleChange = (e) => {
@@ -50,7 +50,7 @@ const onSubmitForm = async () => {
     // </Fragment>
 
     <>
-    <EuiFlexGroup>
+    <EuiFlexGroup data-testid="container">
       <EuiFlexItem>
         <EuiFieldText
           placeholder="Add a task..."
@@ -88,4 +88,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store
- export default connect(mapStateToProps, mapDispatchToProps)(InputTodo);
+ export default connect(mapStateToProps, mapDispatchToProps)(TaskAdd);

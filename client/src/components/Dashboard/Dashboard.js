@@ -4,8 +4,8 @@ import {PageContainer} from "../_global_components";
 
 
 
-import {ListTodo} from "./";
-import {InputTodo} from "./"
+import {TaskList} from "./";
+import {TaskAdd} from "./"
 
 // redux
 // import { connect } from "react-redux";
@@ -26,8 +26,8 @@ export const Dashboard = () => {
   return (
     <Fragment>
     <PageContainer>
-     <InputTodo />
-     <ListTodo />
+     <TaskAdd />
+     <TaskList />
      </PageContainer>
     </Fragment>
   );

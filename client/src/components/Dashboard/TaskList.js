@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 // import EditTodo from "./EditTodo";
-import {TaskItem} from "./";
+import {TaskItem} from ".";
 
 import { Link, withRouter } from "react-router-dom";
 
@@ -13,7 +13,7 @@ import { getAllTasks, deleteTask } from "../../redux/index";
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
 
-const ListTodo = (props) => {
+const TaskList = (props) => {
   useEffect(() => {
     props.getAllTasks();
   }, []);
@@ -78,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // connect react components to Redux store
-export default connect(mapStateToProps, mapDispatchToProps)(ListTodo);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
