@@ -20,6 +20,8 @@ import styled from "styled-components";
 import { RegistrationForm } from "./RegistrationForm";
 import { Logo } from "../_global_components";
 
+import { motion } from "framer-motion";
+
 const StyledEuiPage = styled(EuiPage)`
   flex: 1;
 `;
@@ -56,8 +58,23 @@ const Register = (props) => {
 
             <EuiFlexGroup justifyContent="spaceAround">
               <EuiFlexItem grow={false}>
-               <EuiTitle><h1>Register Now</h1></EuiTitle>
-               <EuiText textAlign="center"><h4>It's free!</h4></EuiText>
+                <EuiTitle>
+                  <h1>Register Now</h1>
+                </EuiTitle>
+                <EuiText textAlign="center">
+                  <motion.h4
+                    initial={{ y: "10vw", opacity: 0 }}
+                    animate={{
+                      scale: 1.2,
+                      textDecoration: "underline",
+                      y: 0,
+                      opacity: 1,
+                    }}
+                    transition={{ delay: 2, duration: 1.5, type: "spring" }}
+                  >
+                    It's free!
+                  </motion.h4>
+                </EuiText>
               </EuiFlexItem>
             </EuiFlexGroup>
 

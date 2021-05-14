@@ -31,6 +31,10 @@ import Skeleton from "react-loading-skeleton";
 //validation rules
 import { registerFormValidationsRules } from "../../utils/validations/registrationFormValidations";
 
+// framer motion 
+import { motion } from "framer-motion";
+
+
 export const RegistrationForm = (props) => {
   // form inputs
   const [fName, setFName] = useState("");
@@ -277,9 +281,13 @@ export const RegistrationForm = (props) => {
           justifyContent="spaceAround"
         >
           <EuiFlexItem grow={false}>
-            <EuiButton href="#" onClick={handleSubmit}>
+          <motion.div whileHover={{ scale: 1.1}}>
+          <EuiButton whileHover={{scale: 1.1}} href="#" onClick={handleSubmit}>
               Register Now
             </EuiButton>
+
+          </motion.div>
+           
           </EuiFlexItem>
         </EuiFlexGroup>
 
