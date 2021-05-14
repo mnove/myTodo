@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import {SubtaskContainer} from "./";
+import {InlineEdit} from "./";
 
 import {
   EuiPanel,
@@ -36,20 +37,33 @@ const TaskDate = styled(EuiText)`
 `;
 
 const Task = (props) => {
-  const [description, setDescription] = useState(
-    props.tasks[0].task_description
-  );
+  const [description, setDescription] = useState(props.tasks[0].task_description);
+
+  // useEffect( () => {
+  //   setDescription(props.tasks[0].task_description)
+  // }, [])
   const taskId = props.match.params.id;
 
   const handleOnChange = (e) => {
-    setDescription(e.target.value);
+    // setDescription(e.target.value);
   };
-  const handleSave = () => {
-    console.log("reached here ", description, "   ", taskId);
-    console.log("dddddd");
-    console.log(taskId);
-    props.updateTask(description, taskId);
+
+  const handleSetDescriptionChange = (newDescription) => {
+    console.log(newDescription)
+    setDescription(newDescription);
+    handleSave(newDescription); 
+  }
+
+  const handleSave = async ( newDescription ) => {
+    // console.log("reached here ", description, "   ", taskId);
+    // console.log(taskId);
+    await props.updateTask(newDescription, taskId);
+    // setDescription(props.tasks[0].task_description);
+    console.log("SAVED", newDescription)
+    console.log("PROPS", setDescription(props.tasks[0].task_description))
   };
+
+  
 
   const taskData = props.tasks[0];
 
@@ -59,19 +73,26 @@ const Task = (props) => {
   let dateUpdated = new Date(taskData.updated_at);
   dateUpdated = dateUpdated.toString();
 
+  console.log(description); 
+
   return (
     <>
       <PageContainer>
         <TaskHeader paddingSize="l">
-          <EuiFlexGroup>
+        <EuiFlexGroup>
+            <EuiFlexItem>
+              <InlineEdit text={description}  onSetText={(newDescription) => handleSetDescriptionChange(newDescription)}></InlineEdit>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          {/* <EuiFlexGroup>
             <EuiFlexItem>
               <EuiText>
                 <h4>Task Description</h4>
               </EuiText>
             </EuiFlexItem>
-          </EuiFlexGroup>
+          </EuiFlexGroup> */}
           {""}
-          <EuiFlexGroup>
+          {/* <EuiFlexGroup>
             <EuiFlexItem>
               <EuiText>
                 <input
@@ -88,7 +109,7 @@ const Task = (props) => {
               </div>
             </EuiFlexItem>
           </EuiFlexGroup>
-          {""}
+          {""} */}
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiText>
