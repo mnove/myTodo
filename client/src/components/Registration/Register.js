@@ -17,7 +17,8 @@ import {
 } from "@elastic/eui";
 import styled from "styled-components";
 
-import {RegistrationForm} from "./RegistrationForm";
+import { RegistrationForm } from "./RegistrationForm";
+import { Logo } from "../_global_components";
 
 const StyledEuiPage = styled(EuiPage)`
   flex: 1;
@@ -34,34 +35,35 @@ const StyledEuiPageHeader = styled(EuiPageHeader)`
 `;
 
 const StyledEuiText = styled(EuiText)`
+  h4 {
+    color: grey;
+  }
+`;
 
-    h4 {
-        color: grey;
-      }
-      
-    `;
-
- const Register = (props) => {
+const Register = (props) => {
   return (
     <Fragment>
       <Fragment>
         <StyledEuiPage>
           <EuiPageBody component="section">
-            <EuiFlexGroup>
-              <EuiFlexItem grow={6}>
-                <EuiTitle size="l">
-                  <h1>Welcome to myTodo</h1>
-                </EuiTitle>
-
-                <EuiText>
-                  <h4>Register now. It's free!</h4>
-                </EuiText>
-
-                <StyledEuiText>
-                  <h4>Register now. It's free!</h4>
-                </StyledEuiText>
+            <EuiFlexGroup justifyContent="spaceAround">
+              <EuiFlexItem grow={false}>
+                <Logo />
               </EuiFlexItem>
+            </EuiFlexGroup>
 
+            <EuiSpacer />
+
+            <EuiFlexGroup justifyContent="spaceAround">
+              <EuiFlexItem grow={false}>
+               <EuiTitle><h1>Register Now</h1></EuiTitle>
+               <EuiText textAlign="center"><h4>It's free!</h4></EuiText>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+
+            <EuiSpacer />
+
+            <EuiFlexGroup>
               <EuiFlexItem grow={6}>
                 <EuiPageContent
                   verticalPosition="center"
@@ -80,4 +82,4 @@ const StyledEuiText = styled(EuiText)`
   );
 };
 
- export default withRouter(Register);
+export default withRouter(Register);

@@ -11,17 +11,26 @@ import { getAllTasks } from "../redux/index";
 
 // loading skeletons
 import Skeleton from "react-loading-skeleton";
+import SampleComponent from "./SampleComponent";
 
 const TestComponent = ( props ) => {
 
 
-  
+  const data = {
+    name: 'John',
+  };
+
+
+
+
 
 
 
   return (
     <Fragment>
         <h1>Test Component within protected route</h1>
+        <SampleComponent person={data}/>
+        {/* <SampleComponent person={{}}/> */}
     </Fragment>
   );
 };

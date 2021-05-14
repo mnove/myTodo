@@ -7,17 +7,19 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 //components
 
 import ProtectedRoute from "./components/protectedRoute";
-import {Nav} from "./components/Navbar";
-import {Home} from "./components/Home";
-import {Login} from "./components/Login";
-import {Register} from "./components/Registration";
-import {Dashboard} from "./components/Dashboard";
+import { Nav } from "./components/Navbar";
+import { Home } from "./components/Home";
+import { Login } from "./components/Login";
+import { Register } from "./components/Registration";
+import { Dashboard } from "./components/Dashboard";
 import TestComponent from "./components/TestComponent";
-import {Task} from "./components/Task/index";
+import { Task } from "./components/Task/index";
 
 // redux
 import { connect } from "react-redux";
 import { verifyUserLogin } from "./redux/index";
+import { ErrorBoundary } from "react-error-boundary";
+import { Fallback } from "./components/_global_components";
 
 function App(props) {
   useEffect(() => {
@@ -25,25 +27,29 @@ function App(props) {
     console.log("reached here");
   }, []);
 
+  const errorHandler = (err, errInfo) => {
+    console.error("Logging ", err, errInfo);
+  };
+
   return (
     <BrowserRouter>
-      <Nav />
-      <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/login" component={Login} exact />
-        <Route path="/register" component={Register} exact />
-        <ProtectedRoute path="/dashboard" component={Dashboard} exact />
-        <ProtectedRoute path="/task/:id" component={Task} exact />
-        <ProtectedRoute path="/test" component={TestComponent} exact />
+      <ErrorBoundary FallbackComponent={Fallback} onError={errorHandler}>
+        <Switch>
+          <Route path="/login" component={Login} exact />
+          <Route path="/register" component={Register} exact />
 
-        <Route path="*" component={() => "404 NOT FOUND"} />
-      </Switch>
-      {/* <Fragment>
-        <div className="container">
-          <InputTodo></InputTodo>
-          <ListTodos />
-        </div>
-      </Fragment> */}
+          <div>
+            <Nav />
+            <Route path="/" component={Home} exact />
+            <ProtectedRoute path="/dashboard" component={Dashboard} exact />
+            <ProtectedRoute path="/task/:id" component={Task} exact />
+            <ProtectedRoute path="/test" component={TestComponent} exact />
+          </div>
+
+          <Route path="*" component={() => "404 NOT FOUND"} />
+
+        </Switch>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
