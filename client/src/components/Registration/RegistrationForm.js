@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useHistory } from "react-router-dom";
+
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,6 +37,10 @@ import { motion } from "framer-motion";
 
 
 export const RegistrationForm = (props) => {
+
+  let history = useHistory();
+
+
   // form inputs
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -297,7 +302,7 @@ export const RegistrationForm = (props) => {
           justifyContent="spaceAround"
         >
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty href="#">Login</EuiButtonEmpty>
+            <EuiButtonEmpty onClick={ () => history.push("/login")}>Login</EuiButtonEmpty>
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiForm>

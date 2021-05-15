@@ -70,7 +70,7 @@ const Register = (props) => {
                       y: 0,
                       opacity: 1,
                     }}
-                    transition={{ delay: 2, duration: 1.5, type: "spring" }}
+                    transition={{ delay: 1, duration: 1.5, type: "spring" }}
                   >
                     It's free!
                   </motion.h4>
