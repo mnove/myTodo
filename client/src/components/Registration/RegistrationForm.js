@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useHistory } from "react-router-dom";
+
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,7 +32,15 @@ import Skeleton from "react-loading-skeleton";
 //validation rules
 import { registerFormValidationsRules } from "../../utils/validations/registrationFormValidations";
 
+// framer motion 
+import { motion } from "framer-motion";
+
+
 export const RegistrationForm = (props) => {
+
+  let history = useHistory();
+
+
   // form inputs
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -277,9 +286,13 @@ export const RegistrationForm = (props) => {
           justifyContent="spaceAround"
         >
           <EuiFlexItem grow={false}>
-            <EuiButton href="#" onClick={handleSubmit}>
+          <motion.div whileHover={{ scale: 1.1}}>
+          <EuiButton whileHover={{scale: 1.1}} href="#" onClick={handleSubmit}>
               Register Now
             </EuiButton>
+
+          </motion.div>
+           
           </EuiFlexItem>
         </EuiFlexGroup>
 
@@ -289,7 +302,7 @@ export const RegistrationForm = (props) => {
           justifyContent="spaceAround"
         >
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty href="#">Login</EuiButtonEmpty>
+            <EuiButtonEmpty onClick={ () => history.push("/login")}>Login</EuiButtonEmpty>
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiForm>

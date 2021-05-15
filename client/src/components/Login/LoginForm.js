@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 
 import {
   EuiButton,
@@ -21,6 +21,11 @@ import { connect } from "react-redux";
 import { loginUser } from "../../redux/index";
 
 const Login = (props) => {
+
+
+  let history = useHistory();
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -151,7 +156,7 @@ const Login = (props) => {
             justifyContent="spaceAround"
           >
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty href="#">Register</EuiButtonEmpty>
+              <EuiButtonEmpty onClick={ () => history.push("/register")}>Register</EuiButtonEmpty>
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiForm>

@@ -93,7 +93,7 @@ const createNewTaskFailure = (error) => {
 export const createNewTask = (newTaskDescription) => {
   return async (dispatch) => {
     console.log("reached here in the dispatch actions");
-    dispatch(createNewTaskRequest());
+    //dispatch(createNewTaskRequest());
 
     const response = await tasksApi.createOne(newTaskDescription);
 
@@ -182,7 +182,7 @@ const deleteTaskFailure = (error) => {
 export const deleteTask = (taskId) => {
   return async (dispatch) => {
     console.log("reached here in the dispatch actions");
-    dispatch(deleteTaskRequest());
+    // dispatch(deleteTaskRequest());
 
     const response = await tasksApi.deleteOne(taskId);
 

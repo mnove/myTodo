@@ -31,6 +31,8 @@ const tasksReducer = (state = initialState, action) => {
       };
 
     case GET_ALL_TASKS_SUCCESS:
+
+      
       return {
         loading: false,
         data: action.payload,
@@ -53,7 +55,7 @@ const tasksReducer = (state = initialState, action) => {
     case CREATE_NEW_TASK_SUCCESS:
       return {
         loading: false,
-        data: [...state.data, action.payload],
+        data: [...state.data, action.payload  ], // original order>>>>  [action.payload, ...state.data ]
         error: "",
       };
 
