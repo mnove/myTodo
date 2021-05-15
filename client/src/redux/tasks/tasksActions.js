@@ -13,7 +13,11 @@ import {
   DELETE_TASK_FAILURE,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
-  UPDATE_TASK_FAILURE
+  UPDATE_TASK_FAILURE,
+  UPDATE_TASK_STATUS_REQUEST,
+  UPDATE_TASK_STATUS_SUCCESS,
+  UPDATE_TASK_STATUS_FAILURE
+
 } from "./tasksTypes";
 
 import { tasksApi } from "../../api/tasks-api";
@@ -241,6 +245,53 @@ export const updateTask = (newDescription, taskId) => {
       const newDescription = response.data[0].task_description;
       const taskId = response.data[0].task_id;
       dispatch(updateTaskSuccess(newDescription, taskId));
+      
+    }
+  };
+};
+
+
+// UPDATE A TASK STATUS BY TASK ID
+
+const updateTaskStatusRequest = () => {
+  return {
+    type: UPDATE_TASK_STATUS_REQUEST,
+  };
+};
+
+const updateTaskStatusSuccess = (taskId, newStatus) => {
+  return {
+    type: UPDATE_TASK_STATUS_SUCCESS,
+    payload: {
+      newStatus: newStatus,
+      taskId: taskId
+    },
+  };
+};
+
+const updateTaskStatusFailure = (error) => {
+  return {
+    type: UPDATE_TASK_STATUS_FAILURE,
+    payload: error,
+  };
+};
+
+export const updateTaskStatus = (taskId, newStatus) => {
+  return async (dispatch) => {
+    console.log("reached here in the dispatch actions", taskId, newStatus);
+    //dispatch(updateTaskStatusRequest());
+  
+    const response = await tasksApi.updateTaskStatus(taskId, newStatus);
+
+    if (response.error) {
+       console.log(response);
+      console.log("MESSAGE: ", response.error.message);
+      const errorMsg = response.error.message;
+      dispatch(updateTaskStatusFailure(errorMsg));
+    } else {
+      const newStatus = response.data[0].task_is_completed;
+      const taskId = response.data[0].task_id;
+      dispatch(updateTaskStatusSuccess(taskId, newStatus));
       
     }
   };

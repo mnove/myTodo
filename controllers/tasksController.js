@@ -12,10 +12,9 @@ const create_task = async (req, res) => {
       [description, userId]
     );
 
-   
-    console.log(newTask.rows[0]); 
-    
-     res.status(201).send(newTask.rows);
+    console.log(newTask.rows[0]);
+
+    res.status(201).send(newTask.rows);
   } catch (error) {
     console.error(error);
   }
@@ -45,9 +44,9 @@ const get_task = async (req, res) => {
       [taskId]
     );
     console.table(aTask.rows);
-    res.json(aTask.rows[0]);
+    res.status(202).send(aTask.rows[0]);
   } catch (error) {
-    console.error(error);
+    res.status(400).send(error);
   }
 };
 
@@ -62,8 +61,24 @@ const update_task = async (req, res) => {
     console.log(updateTask);
     res.status(202).send(updateTask.rows);
   } catch (error) {
-    res.status(400).send(error)
+    res.status(400).send(error);
     console.error(error);
+  }
+};
+
+const update_task_status = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const { newStatus } = req.body;
+
+    const updateTask = await pool.query(
+      "UPDATE app.tasks SET task_is_completed = $1 WHERE task_id = $2 RETURNING *",
+      [newStatus, taskId]
+    );
+
+    res.status(200).send(updateTask.rows);
+  } catch (error) {
+    res.status(400).send(error);
   }
 };
 
@@ -86,5 +101,6 @@ module.exports = {
   get_all,
   get_task,
   update_task,
+  update_task_status,
   delete_task,
 };

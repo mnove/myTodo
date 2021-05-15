@@ -92,6 +92,30 @@ export const tasksApi = {
         })
       );
     },
+    
+     /**
+   * get a task status  by taskId
+   * @param {string} taskId 
+   * @param {string} newStatus
+   */
+      updateTaskStatus: async function (taskId, newStatus) {
+
+        let updatedTaskStatus = {
+          newStatus: newStatus
+        }
+  
+        return await resolve(
+          axios({
+            method: "PUT",
+            url: `api/tasks/status/${taskId}`,
+            data: updatedTaskStatus,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: "include", // to get the cookie in every request
+          }).then((res) => {
+            return res.data;
+          })
+        );
+      },
 
     
     /**

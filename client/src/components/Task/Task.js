@@ -2,8 +2,8 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import { Link, withRouter } from "react-router-dom";
 
-import {SubtaskContainer} from "./";
-import {InlineEdit} from "./";
+import { SubtaskContainer } from "./";
+import { InlineEdit } from "./";
 
 import {
   EuiPanel,
@@ -15,9 +15,7 @@ import {
   EuiText,
 } from "@elastic/eui";
 
-
-import {PageContainer} from "../_global_components/PageContainer";
-
+import { PageContainer } from "../_global_components/PageContainer";
 
 import styled from "styled-components";
 
@@ -37,7 +35,9 @@ const TaskDate = styled(EuiText)`
 `;
 
 const Task = (props) => {
-  const [description, setDescription] = useState(props.tasks[0].task_description);
+  const [description, setDescription] = useState(
+    props.tasks[0].task_description
+  );
 
   // useEffect( () => {
   //   setDescription(props.tasks[0].task_description)
@@ -49,21 +49,19 @@ const Task = (props) => {
   };
 
   const handleSetDescriptionChange = (newDescription) => {
-    console.log(newDescription)
+    console.log(newDescription);
     setDescription(newDescription);
-    handleSave(newDescription); 
-  }
+    handleSave(newDescription);
+  };
 
-  const handleSave = async ( newDescription ) => {
+  const handleSave = async (newDescription) => {
     // console.log("reached here ", description, "   ", taskId);
     // console.log(taskId);
     await props.updateTask(newDescription, taskId);
     // setDescription(props.tasks[0].task_description);
-    console.log("SAVED", newDescription)
-    console.log("PROPS", setDescription(props.tasks[0].task_description))
+    console.log("SAVED", newDescription);
+    console.log("PROPS", setDescription(props.tasks[0].task_description));
   };
-
-  
 
   const taskData = props.tasks[0];
 
@@ -73,15 +71,20 @@ const Task = (props) => {
   let dateUpdated = new Date(taskData.updated_at);
   dateUpdated = dateUpdated.toString();
 
-  console.log(description); 
+  console.log(description);
 
   return (
     <>
       <PageContainer>
         <TaskHeader paddingSize="l">
-        <EuiFlexGroup>
+          <EuiFlexGroup>
             <EuiFlexItem>
-              <InlineEdit text={description}  onSetText={(newDescription) => handleSetDescriptionChange(newDescription)}></InlineEdit>
+              <InlineEdit
+                text={description}
+                onSetText={(newDescription) =>
+                  handleSetDescriptionChange(newDescription)
+                }
+              ></InlineEdit>
             </EuiFlexItem>
           </EuiFlexGroup>
           {/* <EuiFlexGroup>
@@ -125,9 +128,8 @@ const Task = (props) => {
             </EuiFlexItem>
           </EuiFlexGroup>
         </TaskHeader>
-        <SubtaskContainer/>
-        </PageContainer>
-  
+        <SubtaskContainer />
+      </PageContainer>
     </>
   );
 };
@@ -148,6 +150,7 @@ const mapDispatchToProps = (dispatch) => {
     getAllTasks: () => dispatch(getAllTasks()),
     updateTask: (newDescription, taskId) =>
       dispatch(updateTask(newDescription, taskId)),
+      
   };
 };
 

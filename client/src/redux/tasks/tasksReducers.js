@@ -14,6 +14,9 @@ import {
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
   UPDATE_TASK_FAILURE,
+  UPDATE_TASK_STATUS_REQUEST,
+  UPDATE_TASK_STATUS_SUCCESS,
+  UPDATE_TASK_STATUS_FAILURE,
 } from "./tasksTypes";
 
 const initialState = {
@@ -31,8 +34,6 @@ const tasksReducer = (state = initialState, action) => {
       };
 
     case GET_ALL_TASKS_SUCCESS:
-
-      
       return {
         loading: false,
         data: action.payload,
@@ -55,7 +56,7 @@ const tasksReducer = (state = initialState, action) => {
     case CREATE_NEW_TASK_SUCCESS:
       return {
         loading: false,
-        data: [...state.data, action.payload  ], // original order>>>>  [action.payload, ...state.data ]
+        data: [...state.data, action.payload], // original order>>>>  [action.payload, ...state.data ]
         error: "",
       };
 
@@ -124,7 +125,7 @@ const tasksReducer = (state = initialState, action) => {
           if (task.task_id === action.payload.taskId) {
             task.task_description = action.payload.newDescription;
           }
-          
+
           return task;
         }),
       };
@@ -135,6 +136,39 @@ const tasksReducer = (state = initialState, action) => {
         data: [],
         error: action.payload,
       };
+
+    case UPDATE_TASK_STATUS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case UPDATE_TASK_STATUS_SUCCESS:
+      // const { newDescription, taskId } = action.payload;
+
+
+      return {
+        loading: false,
+        error: "",
+        data: state.data.map((task) => {
+          if (task.task_id === action.payload.taskId) {
+            return {
+              ...task,
+              task_is_completed: action.payload.newStatus,
+            };
+          }
+
+          return task;
+        }),
+      };
+
+    case UPDATE_TASK_STATUS_FAILURE:
+      return {
+        loading: false,
+        data: [],
+        error: action.payload,
+      };
+
     default:
       return state;
   }
