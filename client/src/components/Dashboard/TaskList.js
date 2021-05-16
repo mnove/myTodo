@@ -16,8 +16,8 @@ import Skeleton from "react-loading-skeleton";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 
 const TaskList = (props) => {
-  useEffect(() => {
-    props.getAllTasks();
+  useEffect(async () => {
+    await props.getAllTasks();
   }, []);
 
   console.log(props);
@@ -41,35 +41,34 @@ const TaskList = (props) => {
     } else {
       return (
         <>
-        <AnimateSharedLayout>
-        <motion.div layout style={{display: "flex", flexDirection: "column-reverse"}}>
-        <AnimatePresence>
-          {props.tasks.data.map((task, index) => {
-            return (
-              
-                
-                  <motion.div
-                    initial={{ y: "-10vw", opacity: 0, scale: 0.7 }}
-                    exit={{y: -10, scale: 0.0}}
-                    animate={{
-                      scale: 1,
-                      y: 0,
-                      opacity: 1,
-                    }}
-                    key={index}
-                    transition={{ delay: 0, duration: 0.3, type: "spring" }}
-                  >
-                    <TaskItem
-                      task={task}
-                      style={{ marginTop: 5, marginBottom: 10 }}
-                    />
-                  </motion.div>
-                
-            
-            );
-          })}
-          </AnimatePresence>
-          </motion.div>
+          <AnimateSharedLayout>
+            <motion.div
+              layout
+              style={{ display: "flex", flexDirection: "column-reverse" }}
+            >
+              <AnimatePresence>
+                {props.tasks.data.map((task, index) => {
+                  return (
+                    <motion.div
+                      initial={{ y: "-10vw", opacity: 0, scale: 0.7 }}
+                      exit={{ y: -10, scale: 0.0 }}
+                      animate={{
+                        scale: 1,
+                        y: 0,
+                        opacity: 1,
+                      }}
+                      key={index}
+                      transition={{ delay: 0, duration: 0.3, type: "spring" }}
+                    >
+                      <TaskItem
+                        task={task}
+                        style={{ marginTop: 5, marginBottom: 10 }}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
           </AnimateSharedLayout>
         </>
       );

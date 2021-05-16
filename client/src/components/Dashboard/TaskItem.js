@@ -10,6 +10,7 @@ import {
   EuiText,
   EuiButton,
   EuiButtonIcon,
+  EuiToolTip,
 } from "@elastic/eui";
 
 import styled from "styled-components";
@@ -18,6 +19,9 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { deleteTask, updateTaskStatus } from "../../redux/index";
 
+
+// import useToggle from "./hook";
+
 const StyledEuiPanel = styled(EuiPanel)`
   &:hover {
     background-color: #f7f7f7;
@@ -25,14 +29,16 @@ const StyledEuiPanel = styled(EuiPanel)`
 `;
 
 const TaskContainer = styled.div`
+  background-color: ${(props) => (props.completed ? "#dedede" : "#ffffff")};
   padding: 1rem;
   margin: 1rem 0rem;
-  background: #ffffff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
+  opacity: ${(props) => (props.completed ? "00.5" : "1")};
   &:hover {
-    background: #ffffff;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    background: ${(props) => (props.completed ? "#dedede" : "#ffffff")};
+    box-shadow: ${(props) =>
+      props.completed ? "" : "0px 2px 4px rgba(0, 0, 0, 0.2)"};
   }
 `;
 
@@ -42,29 +48,28 @@ const TaskContainer = styled.div`
 //     console.log("task deleted");
 //   };
 
-const useToggle = (initialState) => {
-  const [isToggled, setIsToggled] = React.useState(initialState);
 
-  // put [setIsToggled] into the useCallback's dependencies array
-  // this value never changes so the callback is not going to be ever re-created
-  const toggle = React.useCallback(
-    () => setIsToggled(state => !state),
-    [setIsToggled],
-  );
-
-  return [isToggled, toggle];
-}
 
 
 function TaskItem(props) {
 
-    const [isToggled, toggle] = useToggle(false);
+
+  //  const [isToggled, toggle] = useToggle(false);
+   const [isToggled, setToggle] = useState(props.task.task_is_completed);
+
+   useEffect (() => {
+     
+       props.updateTaskStatus(props.task.task_id, isToggled);
+     
+   }, [isToggled]);
+
+ 
   
-  console.log(props.task.task_is_completed)
+  console.log(isToggled)
 
 
   // useEffect (() => {
-  //   setToggleOn(props.task.task_is_completed)
+  //   toggle(props.task.task_is_completed)
   // }, [props.task.task_is_completed]);
 
   
@@ -75,33 +80,22 @@ function TaskItem(props) {
   };
 
   
-
+  
+  
   const handleMarkComplete = async (e) => {
     e.stopPropagation(); // stops propagation of the event to the parent container (clickable task)
-    
-
-    toggle();
     console.log(isToggled);
-    
-    
-    
-    
-  
-    
-    
+    if(isToggled) {
+      setToggle(false)
+    } else {
+      setToggle(true)
+    }
+     
+    console.log(isToggled);
+    console.log("toggle status: ", isToggled)
 
-    await props.updateTaskStatus(props.task.task_id, isToggled);
-
-
-    // if (e.target.checked === true) {
-    //   isCompleted = true;
-    //   await updateSubtaskStatus(subtask.subtask_id, isCompleted);
-    // } else {
-    //   isCompleted = false;
-    //   await updateSubtaskStatus(subtask.subtask_id, isCompleted);
-    // }
-
-    // await props.updateTaskStatus(props.task.task_id);
+    
+ // await props.updateTaskStatus(props.task.task_id);
     console.log("task marked completed");
   };
 
@@ -113,11 +107,11 @@ function TaskItem(props) {
   return (
     <>
       <div onClick={() => handleOnTaskClick()} style={{ cursor: "pointer" }}>
-        <TaskContainer paddingSize="s">
+        <TaskContainer paddingSize="s" completed={isToggled}>
           <EuiFlexGroup
             gutterSize="s"
             justifyContent="spaceBetween"
-            wrap="true"
+            wrap={true}
           >
             <EuiFlexItem grow={6}>
               <EuiText>
@@ -139,9 +133,13 @@ function TaskItem(props) {
 
             <EuiFlexItem grow={3}>
               <div>
-                <EuiButton size="s" color="success" onClick={handleMarkComplete} iconType="checkInCircleFilled">
-                  {isToggled ? "Todo" : "Done"}
+              <EuiToolTip position="right" content={isToggled ? "Mark status todo" : "Mark status complete"}>
+          
+        
+                <EuiButton size="s" color="secondary" onClick={handleMarkComplete} iconType= {isToggled ? "checkInCircleFilled" : "empty"}>
+                  {isToggled ? "Done" : "Todo"}
                 </EuiButton>
+                </EuiToolTip>
               </div>
             </EuiFlexItem>
           </EuiFlexGroup>
