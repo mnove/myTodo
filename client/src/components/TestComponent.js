@@ -13,7 +13,6 @@ import { getAllTasks } from "../redux/index";
 import Skeleton from "react-loading-skeleton";
 import SampleComponent from "./SampleComponent";
 
-import TestNavbar from "./TestNavbar";
 
 const TestComponent = ( props ) => {
 
@@ -32,7 +31,6 @@ const TestComponent = ( props ) => {
     <Fragment>
         <h1>Test Component within protected route</h1>
         <SampleComponent person={data}/>
-        <TestNavbar/>
         
         {/* <SampleComponent person={{}}/> */}
     </Fragment>
