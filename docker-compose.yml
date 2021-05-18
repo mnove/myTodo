@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: s75r5dqwhij98huj
+    ports:
+      - 5432:5432
+    volumes:
+      - db-volume-stack:/var/lib/postgresql/data
+    networks:
+      - hyper
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 15432:8080
+    depends_on:
+      - postgres
+    networks:
+      - hyper
+
+networks:
+  hyper:
+
+volumes:
+  db-volume-stack:
