@@ -83,16 +83,31 @@ const update_task_status = async (req, res) => {
 };
 
 const delete_task = async (req, res) => {
+  const client = await pool.connect();
+
   try {
     const { taskId } = req.params;
-    const deleteTask = await pool.query(
-      "DELETE FROM app.tasks WHERE task_id = $1 RETURNING *",
-      [taskId]
-    );
-    console.log(deleteTask);
-    res.status(200).send(deleteTask.rows);
+    await client.query("BEGIN"); // BEGIN transaction
+
+    const deleteSubtasksQuery =
+      "DELETE FROM app.subtasks WHERE subtask_task_id = $1 RETURNING *";
+    const deleteSubtasksResponse = await client.query(deleteSubtasksQuery, [
+      taskId,
+    ]);
+
+    const deleteTasksQuery =
+      "DELETE FROM app.tasks WHERE task_id = $1 RETURNING *";
+    const deleteTasksResponse = await client.query(deleteTasksQuery, [taskId]);
+
+    await client.query("COMMIT"); // If all the above is successfull, COMMIT
+
+    res.status(200).send(deleteTasksResponse.rows);
   } catch (error) {
     console.error(error);
+    await client.query("ROLLBACK"); // If errors during transaction, rollback the query
+    res.status(400).send(error);
+  } finally {
+    client.release(); // Release the connection at the end
   }
 };
 
