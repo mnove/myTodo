@@ -1,14 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 
-import { Link, withRouter, useHistory } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 
-
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import {
   EuiButton,
-  EuiCheckboxGroup,
   EuiFieldText,
   EuiForm,
   EuiFormRow,
@@ -19,18 +16,16 @@ import {
   EuiGlobalToastList
 } from "@elastic/eui";
 
-// redux
-import { connect } from "react-redux";
-import { getAllTasks, updateTask } from "../../redux/index";
 
 // api 
 import {userApi} from "../../api/user-api";
 
-// loading skeletons
-import Skeleton from "react-loading-skeleton";
 
 //validation rules
 import { registerFormValidationsRules } from "../../utils/validations/registrationFormValidations";
+
+// Notifications
+import {getToast} from "../../utils/notifications/toastsList";
 
 // framer motion 
 import { motion } from "framer-motion";
@@ -65,7 +60,6 @@ export const RegistrationForm = (props) => {
   const [passwordErrors, setPasswordErrors] = useState("");
   const [isPasswordValid, setPasswordValid] = useState("");
 
-  const [isAllValid, setIsAllValid] = useState(false);
 
   // set FName validation
   const setFNameValidation = (fName) => {
@@ -150,72 +144,34 @@ export const RegistrationForm = (props) => {
   };
 
 
-  // const [toastMessage, setToastMessage] = useState("");
   const [toasts, setToasts] = useState([]);
 
   const removeToast = (removedToast) => {
     setToasts([]);
   };
-
-  const getToast = (message) => {
-      // set up toast notifications
-  const toastsList = [
-    
-    {
-    title: message,
-    color: 'danger',
-    iconType: 'user',
-    text: (
-      <Fragment>
-        <p>Please use another email instead.</p>
-      </Fragment>
-    ),
-  }
-
-
-]
-
-
-    return  (
-      {
-        id: `1001`,
-        toast: toastsList[0]
-    }
   
-    )
-
-  }
-      
   
-
   // submit the form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateAll()) {
-      console.log("Global Validation returned true");
       const response = await userApi.register( 
         fName,
         lName,
         email,
         password
       );
-      console.log(response);
       if (response.error) {
-        console.log("Global Validation returned FALSE");
-        // trigger notifications
-        const toastMessage = response.error.message;
-        const toast = getToast(toastMessage);
-        setToasts(toasts.concat(toast.toast));
-        console.log(toast)
+        // NOTIFICATIONS 
+        const toast = getToast(1001, response.error.message); // get the toast message from utility fx
+        setToasts(toasts.concat(toast.toast)); // set the toast so it displays 
       } else {
-        props.history.push("/login");
+        props.history.push("/login"); // on success - redirect the user to login
       }
     } return null;
   };
 
-  console.log(showFNameErrors);
-  console.log(showFNameErrors);
 
   return (
     <Fragment>
@@ -315,26 +271,7 @@ export const RegistrationForm = (props) => {
   );
 };
 
-// REDUX //
 
-// mapping store state to props
-const mapStateToProps = (state, ownProps) => {
-  return {
-    // tasks: state.tasks.data.filter(
-    //   (task) => task.task_id === ownProps.match.params.id
-    // ),
-  };
-};
-// mapping action creators to props
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // getAllTasks: () => dispatch(getAllTasks()),
-    // updateTask: (newDescription, taskId ) =>
-    //   dispatch(updateTask(newDescription, taskId )),
-  };
-};
 
-// connect react components to Redux store and withRouter
- withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RegistrationForm)
-);
+
+ withRouter(RegistrationForm);

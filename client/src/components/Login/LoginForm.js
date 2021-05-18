@@ -3,7 +3,6 @@ import { withRouter, useHistory } from "react-router-dom";
 
 import {
   EuiButton,
-  EuiCheckboxGroup,
   EuiFieldText,
   EuiForm,
   EuiFormRow,
@@ -14,17 +13,16 @@ import {
   EuiGlobalToastList,
 } from "@elastic/eui";
 
-import styled from "styled-components";
 
 // redux
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/index";
 
+// Notifications
+import { getToast } from "../../utils/notifications/toastsList";
+
 const Login = (props) => {
-
-
   let history = useHistory();
-
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,11 +38,11 @@ const Login = (props) => {
   const [isPasswordValid, setPasswordValid] = useState("");
 
   const handleEmail = (e) => {
-    setEmail(e.target.value); 
+    setEmail(e.target.value);
   };
 
   const handlePassword = (e) => {
-    setPassword(e.target.value); 
+    setPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -56,19 +54,17 @@ const Login = (props) => {
     const errorMsg = props.auth.error;
 
     if (errorMsg) {
-      console.log("Login Failed");
       // trigger notifications
       setShowEmailErrors(true);
       setShowPasswordErrors(true);
 
-      const toastMessage = errorMsg;
-      const toast = getToast(toastMessage);
-      setToasts(toasts.concat(toast.toast));
-      console.log(toast);
+      // NOTIFICATIONS
+      const toast = getToast(1002, errorMsg); // get the toast message from utility fx
+      setToasts(toasts.concat(toast.toast)); // set the toast so it displays
     } else {
       setShowEmailErrors(false);
       setShowPasswordErrors(false);
-      props.history.push("/login");
+      props.history.push("/dashboard");
     }
   };
 
@@ -78,36 +74,17 @@ const Login = (props) => {
     }
 
     if (props.auth.isAuthenticated) {
-      props.history.push("/");
+      props.history.push("/dashboard");
     }
   }, [props.auth.loading]);
 
-  // const [toastMessage, setToastMessage] = useState("");
   const [toasts, setToasts] = useState([]);
   const removeToast = (removedToast) => {
     setToasts([]);
   };
-  const getToast = (message) => {
-    // set up toast notifications
-    const toastsList = [
-      {
-        title: message,
-        color: "danger",
-        iconType: "user",
-      },
-
-    ];
-    return {
-      id: `1001`,
-      toast: toastsList[0],
-    };
-  };
-  
 
   return (
     <Fragment>
-    
-
       <>
         <EuiForm component="form">
           <EuiFormRow
@@ -156,7 +133,9 @@ const Login = (props) => {
             justifyContent="spaceAround"
           >
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={ () => history.push("/register")}>Register</EuiButtonEmpty>
+              <EuiButtonEmpty onClick={() => history.push("/register")}>
+                Register
+              </EuiButtonEmpty>
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiForm>
