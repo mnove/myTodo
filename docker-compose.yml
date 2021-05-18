@@ -6,11 +6,13 @@ services:
     image: postgres
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: s75r5dqwhij98huj
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     ports:
-      - 5432:5432
+      - ${DB_PORT}:5432
     volumes:
-      - db-volume-stack:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
     networks:
       - hyper
 
@@ -18,7 +20,7 @@ services:
     image: adminer
     restart: unless-stopped
     ports:
-      - 15432:8080
+      - 1${DB_PORT}:8080
     depends_on:
       - postgres
     networks:
@@ -28,4 +30,4 @@ networks:
   hyper:
 
 volumes:
-  db-volume-stack:
+  pg-data:
