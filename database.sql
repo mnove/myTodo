@@ -50,31 +50,6 @@ ALTER ROLE r_app_crud SET search_path TO app;
 -- install UUID extension for postgres
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";  /* Installing UUID Postgres extension */
 
--- create triggers to update timestamps in the tables 
-CREATE OR REPLACE FUNCTION trigger_set_timestamp()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.updated_at = NOW();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER set_timestamp
-BEFORE UPDATE ON app.users
-FOR EACH ROW
-EXECUTE PROCEDURE trigger_set_timestamp();
-
-CREATE TRIGGER set_timestamp
-BEFORE UPDATE ON app.tasks
-FOR EACH ROW
-EXECUTE PROCEDURE trigger_set_timestamp();
-
-CREATE TRIGGER set_timestamp
-BEFORE UPDATE ON app.subtasks
-FOR EACH ROW
-EXECUTE PROCEDURE trigger_set_timestamp();
-
 -- create TABLES 
 
 CREATE TABLE app.users (
@@ -107,6 +82,28 @@ CREATE TABLE app.subtasks (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- create triggers to update timestamps in the tables 
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON app.users
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON app.tasks
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON app.subtasks
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
 
