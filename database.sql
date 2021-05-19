@@ -1,41 +1,54 @@
+
+/* Create app schema (won't be using the default public schema) */
 CREATE SCHEMA app;
 
+
+/* READ ONLY ROLE AND PERMISSIONS */
+/* Design partially based on these ideas https://aws.amazon.com/blogs/database/managing-postgresql-users-and-roles/  and this https://severalnines.com/database-blog/how-secure-your-postgresql-database-10-tips*/
+
+/* Create a ROLE that is read-only */
 CREATE ROLE r_app_ro NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
 GRANT USAGE ON SCHEMA app to r_app_ro;
 GRANT SELECT ON ALL TABLES IN SCHEMA app TO r_app_ro;
-ALTER DEFAULT PRIVILEGES IN SCHEMA app GRANT SELECT ON TABLES TO r_app_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA app GRANT SELECT ON TABLES TO r_app_ro;   
 
+/* Create a GROUP ROLE that is read-only */
+/* We then grant the role permissions to the group */
 CREATE ROLE g_app_ro NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
 GRANT r_app_ro TO g_app_ro;
 
-CREATE ROLE app_user WITH  LOGIN;
-ALTER ROLE app_user WITH PASSWORD 'aStrongPassword';
+/* Create a USER ROLE that is read-only */
+/* We then grant the role permissions to the actual user  */
+CREATE ROLE app_user WITH  LOGIN;  -- Only the USER ROLE has LOGIN permission (as it is the one we actually use to connect)  
+ALTER ROLE app_user WITH PASSWORD 'aStrongPassword';  -- REPLACE with A DIFFERENT PASSWORD!!!! 
 ALTER ROLE app_user VALID UNTIL 'infinity';
 GRANT g_app_ro TO app_user;
 
 
+/* Create a ROLE that can perform CRUD operations across the APP schema */
 CREATE ROLE r_app_crud NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
 GRANT USAGE ON SCHEMA app to r_app_crud;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA app TO r_app_crud;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA app TO r_app_crud;  -- Granting CRUD permissions 
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA app TO r_app_crud;
 ALTER DEFAULT PRIVILEGES IN SCHEMA app GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO r_app_crud;
 
+/* Create a GROUP ROLE */
 CREATE ROLE g_app_crud NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
 GRANT r_app_crud TO g_app_crud;
 
-CREATE ROLE app_user_crud WITH LOGIN;
-ALTER ROLE app_user_crud WITH PASSWORD 'anotherStrongPassword';
+/* Create a USER ROLE that is CRUD */
+/* IMPORTANT! */
+/* This is the user that the express server will use to login to the DB and perform CRUD operations */
+CREATE ROLE app_user_crud WITH LOGIN; -- Only the USER ROLE has LOGIN permission (as it is the one we actually use to connect)  
+ALTER ROLE app_user_crud WITH PASSWORD 'anotherStrongPassword';   -- REPLACE with A DIFFERENT PASSWORD!!!! 
 ALTER ROLE app_user_crud VALID UNTIL 'infinity';
 GRANT g_app_crud TO app_user_crud;
 
 -- alter default search to the app schema
 ALTER ROLE r_app_crud SET search_path TO app;
 
-
-
 -- install UUID extension for postgres
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";  /* Installing UUID Postgres extension */
 
 -- create triggers to update timestamps in the tables 
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
@@ -62,6 +75,7 @@ BEFORE UPDATE ON app.subtasks
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
+-- create TABLES 
 
 CREATE TABLE app.users (
     user_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
@@ -73,7 +87,7 @@ CREATE TABLE app.users (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- create table todo in app schema
+-- create table tasks in app schema with a foreign KEY referencing app.users(user_id)
 CREATE TABLE app.tasks (
     task_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     task_owner UUID NOT NULL REFERENCES app.users(user_id),
@@ -83,6 +97,7 @@ CREATE TABLE app.tasks (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- create table subtasks in app schema with a foreign KEY referencing app.tasks(task_id)
 CREATE TABLE app.subtasks (
     subtask_id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     subtask_description VARCHAR (1000) NOT NULL,
@@ -91,43 +106,6 @@ CREATE TABLE app.subtasks (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
-
-
-
-
--- inserting some sample data 
-
-INSERT INTO app.users (
-  user_first_name,
-  user_last_name,
-  user_email,
-  user_password
-
-) VALUES (
-  'Mark',
-  'Markus',
-  'mark@gmail.com',
-  'password123'
-); 
-
-
-
-INSERT INTO app.tasks (
-  task_description, task_owner
-) VALUES (
-  'task1',
-  'd8de13f8-eb8f-47f3-a2a8-89a8e80d43a8'
-); 
-INSERT INTO app.subtasks (
-  subtask_description, subtask_task_id
-) VALUES (
-  'a sample subtask 1',
-  (SELECT task_id FROM app.tasks WHERE app.tasks.task_description = 'task1')
-); 
-
-
-
-
 
 
 

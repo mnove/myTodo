@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { userApi } from "../../api/user-api";
-import Alert from "react-bootstrap/Alert";
 import {
   EuiPage,
   EuiPageBody,

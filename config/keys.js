@@ -13,13 +13,13 @@ const secretKey = process.env.JWT_SECRET;
 
 module.exports = {
   // Local PostgreSQL Keys
-  // postgresDb: {
-  //   user: db_user,
-  //   password: db_password,
-  //   host: db_host,
-  //   port: db_port,
-  //   database: db_database,
-  // },
+  postgresDb: {
+    user: db_user,
+    password: db_password,
+    host: db_host,
+    port: db_port,
+    database: db_database,
+  },
 
   // JWT secret key (for authentication)
   jwt: {
